@@ -4,7 +4,9 @@
  */
 
 var express = require('express')
-  , routes = require('./routes');
+  , site = require('./routes/site')
+  , card = require('./routes/card')
+  , search = require('./routes/search');
 
 var app = module.exports = express.createServer();
 
@@ -29,7 +31,10 @@ app.configure('production', function(){
 
 // Routes
 
-app.get('/', routes.index);
+app.get('/', site.index);
+app.get('/card/:id', card.info);
+app.get('/search/card/:query', search.do_search);
+app.get('/search', search.index);
 
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
