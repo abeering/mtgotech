@@ -9,12 +9,25 @@ pg_client.connect();
 var solr_client = solr.createClient();
 
 var query = pg_client.query( 
-    "SELECT id, name as name_t FROM card" 
+    "SELECT id, name FROM card" 
 );
 
 query.on( 'row', function(row) {
-    console.log( row.name_t );
-    solr_client.add(row, function(err, response) {
+    console.log( row.name );
+
+    var name_length = row.name.length;    
+
+    var partials = [];
+
+    for( i=1; i<=name_length; i++ ){
+        for( n=0; n<i; n++){
+            partials.push( row.name.substring( n, i ) );
+        }
+    }
+
+    var docrow = [ { 'id': row.id, 'name': row.name, 'partial_name': partials } ];
+
+    solr_client.add(docrow, function(err, response) {
         if( err ) throw err;
         console.log('added.');
     });
@@ -23,4 +36,4 @@ query.on( 'row', function(row) {
 var t = setTimeout( function() {
     console.log( 'committing changes..' );
     solr_client.commit();
-}, 2000 );
+}, 5000 );
