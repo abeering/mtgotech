@@ -1,0 +1,120 @@
+
+div#card_box
+
+label.bolder Add Card
+br
+input#card_query(type="text",name="card_query")
+span#card_submit Add
+br 
+br
+div#autocomplete_choices_box
+    ul#autocomplete_choices
+
+        
+script
+
+    // observe card_query element
+    new Form.Element.Observer( 'card_query', .5, function(el, value){
+        // check for letters
+        if ( value === "" ) {
+            $('autocomplete_choices').childElements().each(function(child){ child.remove() });
+            return;
+        }
+        // construct url and request 
+        var search_url = '/search/card/' + encodeURIComponent( value );
+        new Ajax.Request( search_url, {
+            method: 'get',
+            onSuccess: function(transport) {
+
+                //$('card_box').innerHTML = transport.responseText;
+                // return successful, parse card list and create li elements
+                var response_obj = JSON.parse( transport.responseText );
+
+                if( response_obj.numFound > 0 ){
+                    $('autocomplete_choices').childElements().each(function(child){ child.remove() });
+                    var first = true;
+                    response_obj.docs.each(function(item) {
+
+                        if( first ) {
+                            var li_class = 'autocomplete_item selected';
+                            first = false;
+                        } else {
+                            var li_class = 'autocomplete_item';
+                        }
+
+                        var list_element = new Element( 'li', { 'class': li_class, 'id': item.id } );
+
+                        //var background_image = 'url(/cards/' + item.image_name + ')';
+
+                        list_element.update( item.name + ' - ' + item.mana + '<br/>' + item.card_type + '<br />' + item.rarity + ' ' + item.series );
+
+                        list_element.observe('click', function(event){
+                            
+                            if( Event.element(event).hasClassName('selected') ){
+                                addCard( Event.element(event).id );
+                            } else { 
+                                $$('li.selected').each( function( selected_div ){
+                                    selected_div.removeClassName( 'selected' );
+                                });
+                                Event.element(event).addClassName( 'selected' );
+                            }
+                                
+
+                        } );
+                        
+                        $('autocomplete_choices').appendChild( list_element );
+                    } );
+                }
+            }
+
+        }); // end Ajax.Request
+
+    } ); // end Observer
+
+    // watch keypress for navigation / autocomplete
+    $(document).observe('keydown', function(event){
+        // is key press relevant
+        if( [ Event.KEY_DOWN, Event.KEY_UP, Event.KEY_RETURN ].indexOf( event.keyCode ) < 0 ) {
+            $('card_query').focus();
+            return;
+        }
+        // is environment relevant
+        if( $('autocomplete_choices').childElements().size() == 0 ) return;
+
+        // get old selection
+        var old_element;
+        $$('li.selected').each( function( selected_div ){
+            selected_div.removeClassName( 'selected' );
+            old_element = selected_div;
+        });
+
+        var new_element;
+        switch (event.keyCode){
+            case Event.KEY_DOWN:
+                new_element = old_element.next('li');  
+                break;
+            case Event.KEY_UP:
+                new_element = old_element.previous('li');  
+                break;
+            case Event.KEY_RETURN:
+                new_element = old_element;
+                addCard( new_element.id );
+                break;
+            default:
+        }
+
+        if( !new_element ){
+            $('autocomplete_choices').firstDescendant().addClassName( 'selected' );
+            $('card_query').activate();
+            return;
+        }
+        new_element.addClassName( 'selected' );
+
+    });
+
+    function addCard( card_id ){
+        $('card_box').innerHTML = $('card_box').innerHTML + '<br />' + card_id + '<br />';
+    }
+
+    $('card_query').activate();
+
