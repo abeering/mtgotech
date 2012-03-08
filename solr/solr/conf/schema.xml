@@ -11,28 +11,25 @@
  <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
  <solrQueryParser defaultOperator="OR"/>
 
- <copyField source="partial_name" dest="name_auto" />
-
  <fields>
 
     <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
-    <field name="name" type="text_foo" indexed="true" stored="true" required="true" multiValued="false" />
-    <field name="partial_name" type="text_foo" indexed="true" stored="true" required="true" multiValued="true" />
-    <field name="name_auto" type="text_auto" indexed="true" stored="true" multiValued="true" />
+    <field name="name" type="text" indexed="true" stored="true" required="true" multiValued="false" />
+    <field name="partial_name" type="text" indexed="true" stored="true" required="true" multiValued="true" />
+    <field name="series" type="text" indexed="false" stored="true" multiValued="false" />
+    <field name="series_number" type="text" indexed="false" stored="true" multiValued="false" />
+    <field name="card_type" type="text" indexed="false" stored="true" multiValued="false" />
+    <field name="mana" type="text" indexed="false" stored="true" multiValued="false" />
+    <field name="cmc" type="text" indexed="false" stored="true" multiValued="false" />
+    <field name="rarity" type="text" indexed="false" stored="true" multiValued="false" />
+    <field name="image_name" type="text" indexed="false" stored="true" multiValued="false" />
     <field name="indexed" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
    
  </fields>
 
   <types>
 
-    <fieldType name="text_auto" class="solr.TextField">
-        <analyzer>
-            <tokenizer class="solr.KeywordTokenizerFactory"/>
-            <filter class="solr.LowerCaseFilterFactory"/>
-        </analyzer>
-    </fieldType>
-
-    <fieldType name="text_foo" class="solr.TextField" positionIncrementGap="100">
+    <fieldType name="text" class="solr.TextField" positionIncrementGap="100">
         <analyzer>
             <tokenizer class="solr.WhitespaceTokenizerFactory"/>
             <filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" splitOnCaseChange="1"/>
@@ -69,7 +66,7 @@
       </analyzer>
     </fieldType>
 
-    <fieldType name="text" class="solr.TextField" positionIncrementGap="100">
+    <fieldType name="textFIXME" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
         <filter class="solr.StopFilterFactory"

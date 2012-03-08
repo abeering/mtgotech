@@ -9,7 +9,7 @@ pg_client.connect();
 var solr_client = solr.createClient();
 
 var query = pg_client.query( 
-    "SELECT id, name FROM card" 
+    "SELECT id, series, series_number, name, card_type, mana, cmc, rarity, image_name FROM card" 
 );
 
 query.on( 'row', function(row) {
@@ -25,7 +25,19 @@ query.on( 'row', function(row) {
         }
     }
 
-    var docrow = [ { 'id': row.id, 'name': row.name, 'partial_name': partials } ];
+    var docrow = 
+    [ { 
+        'id': row.id, 
+        'name': row.name, 
+        'partial_name': partials ,
+        'series': row.series,
+        'series_number': row.series_number,
+        'card_type': row.card_type,
+        'mana': row.mana,
+        'cmc': row.cmc,
+        'rarity': row.rarity,
+        'image_name': row.image_name
+    } ];
 
     solr_client.add(docrow, function(err, response) {
         if( err ) throw err;
