@@ -64,6 +64,8 @@ script
                         
                         $('autocomplete_choices').appendChild( list_element );
                     } );
+                } else { 
+                    $('autocomplete_choices').childElements().each(function(child){ child.remove() });
                 }
             }
 
