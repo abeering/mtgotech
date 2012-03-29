@@ -4,6 +4,14 @@ body {
     padding: 0px;
 }
 
+a.link {
+    font: 12px Tahoma;
+    color: blue;
+    font-weight: normal;
+    margin-left: 2px; 
+    margin-right: 2px;
+}
+
 /* 
  *
  *  navigation elements ( header )
@@ -23,10 +31,14 @@ div#header {
 a.nav {
     margin-right: 15px;
     margin-left: 15px;
-    font-weight: bold;
+    margin-top: 5px;
+    font-weight: normal;
     font-size: 14px;
-    text-decoration: none;
     color: black;
+}
+
+a.nav:hover {
+    color: white;
 }
 
 div.content {

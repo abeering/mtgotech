@@ -12,23 +12,27 @@ pg_client.connect();
 
 exports.display = function( req, res ){
     console.log( "hit card.display" );
-    res.render('card', { "title": req.card_info.name, "card_info": req.card_info, "card_usage": req.card_usage, "relation_info": req.relation_info })
+    res.render('card', { "title": req.card_info.name, "card_info": req.card_info, "card_usage": req.card_usage, "relation_info": req.relation_info, "filter_format_name": req.filter_format_name })
 };
 
 exports.filter_format = function(req, res, next){
 
-    switch( req.params.format ){
+    switch( req.params.format.toLowerCase() ){
         case 'pauper':
             req.filter_format = 4;
+            req.filter_format_name = 'Pauper';
             break;
         case 'standard':
             req.filter_format = 1;
+            req.filter_format_name = 'Standard';
             break;
         case 'legacy': 
             req.filter_format = 2;
+            req.filter_format_name = 'Legacy';
             break;
         case 'modern':
             req.filter_format = 3;
+            req.filter_format_name = 'Modern';
             break;
     }
 

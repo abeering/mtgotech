@@ -15,6 +15,19 @@ div#card_info
         br
         != card_info.rules_text
     hr
+    p 
+        if filter_format_name
+            span You are currently viewing data for the #{filter_format_name} format.  You can also select: 
+        else 
+            span You can limit these results to a certain format: 
+        - var formats = [ 'All', 'Standard', 'Legacy', 'Modern', 'Pauper' ]
+        each format in formats
+            if format != filter_format_name
+                if format == 'All' 
+                    a.link(href="/card/"+card_info.id)= format
+                else
+                    a.link(href="/card/"+card_info.id+"/format/"+format)= format
+    hr
     p
         span This card has been seen in #{card_usage.total_seen} recorded decks.
         br
@@ -32,7 +45,7 @@ div#card_info
     p
         span This card is most often played with these cards:
         br
-        span(style='font-size:10px;font-style:italic') ( % represents the percentage of decks which contain the listed card and also contain #{card_info.name} )
+        span(style='font-size:10px;font-style:italic') ( % represents the percentage of decks which contain #{card_info.name} AND the listed card )
         each relation in relation_info
             div.relation_card 
                 span #{relation.name}  
