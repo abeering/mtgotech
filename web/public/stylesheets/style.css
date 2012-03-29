@@ -78,6 +78,7 @@ div#card_info {
     text-align: left;
     width: 500px;
     height: 100%;
+    overflow: auto;
 }
 
 /* for the card usage graph */
@@ -125,6 +126,28 @@ div.relation_card {
 
 img.relation_card_img {
     width: 140px;
+
+}
+/*
+ *
+ * deck page elements 
+ *
+ */
+
+div.card_group { 
+    border: 0px;
+    padding: 5px;
+    width: 235px;
+}
+
+div.sideboard_group { 
+    float: right;
+    padding: 5px;
+    width: 235px;
+}
+
+span.card_group_label {
+    font-weight: bold;
 }
 
 /*
@@ -217,4 +240,8 @@ a {
 
 .floatright {
     float: right;
+}
+
+.help {
+    cursor: help;
 }

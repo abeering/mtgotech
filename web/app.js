@@ -32,12 +32,20 @@ app.configure('production', function(){
 
 // Routes
 
+// homepage
 app.get('/', site.index);
+
+// card pages
 app.get('/card/:id', card.card_info, card.card_usage, card.card_relations, card.display );
 app.get('/card/:id/format/:format', card.filter_format, card.card_info, card.card_usage, card.card_relations, card.display );
+
+// deck pages
+app.get('/deck/:deck_id', deck.deck_info, deck.deck_cards_info, deck.display);
+app.get('/deck/build', deck.build);
+
+// search pages
 app.get('/search/card/:query', search.card_search, search.results );
 app.get('/search', search.index);
-app.get('/deck', deck.build);
 
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
