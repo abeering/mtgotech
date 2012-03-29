@@ -1,6 +1,45 @@
-img(src="/cards/"+card_info.image_name,align='right')
-h2 #{card_info.name}
-h3 #{card_info.mana}
-h3 #{card_info.card_type} 
-h4 #{card_info.rarity} 
-h4 #{card_info.series}
+img#card_image(src="/cards/"+card_info.shortname+"/"+card_info.image_name)
+
+div#card_info
+    p
+        b #{card_info.name} 
+        if card_info.mana 
+            -
+            #{card_info.mana} 
+        if card_info.cmc 
+            i ( #{card_info.cmc} )
+        br
+        #{card_info.rarity} 
+        #{card_info.type} 
+        br
+        br
+        != card_info.rules_text
+    hr
+    p
+        span This card has been seen in #{card_usage.total_seen} recorded decks.
+        br
+        br
+        span Breakdown by average number in deck: 
+        br
+        div#usage_graph
+            each usage_stat in card_usage.usage_stats
+                - var bar_class = 'used_' + usage_stat.number + '_bar usage_bar'
+                - var bar_style = 'width:' + usage_stat.percentage + '%'
+                if usage_stat.percentage > 1
+                    div(class=bar_class,style=bar_style)
+                        #{usage_stat.number}
+    hr
+    p
+        span This card is most often played with these cards:
+        br
+        span(style='font-size:10px;font-style:italic') ( % represents the percentage of decks which contain the listed card and also contain #{card_info.name} )
+        each relation in relation_info
+            div.relation_card 
+                span #{relation.name}  
+                br
+                span 
+                    b #{relation.percentage}%
+                a(href="/card/"+relation.second_card_id)
+                    img.relation_card_img(src="/cards/"+relation.shortname+"/"+relation.image_name)
+
+

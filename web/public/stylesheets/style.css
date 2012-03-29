@@ -1,17 +1,125 @@
 body {
-    font: 12px Verdana;
+    font: 12px Tahoma;
     background-color: whitesmoke;
+    padding: 0px;
+}
+
+/* 
+ *
+ *  navigation elements ( header )
+ *
+ */
+
+div#header {
+    background-color: slategray;
+    margin: 0px; 
+    margin-left: 50px;
+    padding: 5px;
+    width: 800px;
+    height: 20px;
+    text-align: left;
+}
+
+a.nav {
+    margin-right: 15px;
+    margin-left: 15px;
+    font-weight: bold;
+    font-size: 14px;
+    text-decoration: none;
+    color: black;
 }
 
 div.content {
-    padding-left: 25px;
-    padding-top: 25px;
-    border-top: 1px solid black;
-    border-left: 1px solid black;
-    margin: 50px 0px 0px 25px;
+    margin-top: 10px;
+    margin-left: 50px;
+    width: 790px;
     height: 100%;
-    width: 100%;
+    border: 1px solid;
+    padding: 10px;
+    overflow: auto;
 }
+
+input#navsearch { 
+    float:right; 
+    height: 13px;
+}
+
+input#navsubmit {
+    float:right;
+    margin-top: -1px;
+    margin-left: 5px;
+}
+
+/*
+ *
+ * card page elements 
+ *
+ */
+
+img#card_image {
+    float: right;
+    width: 250px;
+}
+
+div#card_info {
+    padding: 10px;
+    text-align: left;
+    width: 500px;
+    height: 100%;
+}
+
+/* for the card usage graph */
+
+div#usage_graph {
+    position: relative;
+    width: 450px;
+    height: 15px;
+    border: 1px solid;
+    background-color: gray;
+}
+
+div.usage_bar {
+    float: left;
+    display: block;
+    position: relative;
+    text-align: center;
+    height: 15px;
+}
+
+div.used_4_bar {
+    background-color: #66FF00;
+}
+div.used_3_bar {
+    background-color: #CCFF00;
+}
+div.used_2_bar {
+    background-color: #FF9900;
+}
+div.used_1_bar {
+    background-color: #FF0000;
+}
+
+/* for card relation boxes */
+div.relation_card {
+    text-align: center;
+    font-size: 10px;
+    border: 1px solid;
+    padding: 5px; 
+    width: 140px; 
+    margin-right: 10px;
+    margin-bottom: 10px;
+    float: left;
+}
+
+img.relation_card_img {
+    width: 140px;
+}
+
+/*
+ *
+ * card search elements 
+ *
+ */
 
 input#card_query {
     width: 300px;
@@ -93,4 +201,8 @@ a {
 
 .bolder {
     font-weight: bold;
+}
+
+.floatright {
+    float: right;
 }

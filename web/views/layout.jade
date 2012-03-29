@@ -1,8 +1,13 @@
 !!!
 html
   head
-    title asdfasdf
+    title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
     script(src='/javascripts/prototype.js')
   body
+    div#header 
+        a.nav(href="/results") Results
+        a.nav(href="/cards") Cards
+        input#navsubmit(type='submit',value='Search');
+        input#navsearch(type='text',value='Find Card')
     div#content.content!= body

@@ -33,7 +33,8 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', site.index);
-app.get('/card/:id', card.info);
+app.get('/card/:id', card.card_info, card.card_usage, card.card_relations, card.display );
+app.get('/card/:id/format/:format', card.filter_format, card.card_info, card.card_usage, card.card_relations, card.display );
 app.get('/search/card/:query', search.card_search, search.results );
 app.get('/search', search.index);
 app.get('/deck', deck.build);
