@@ -31,18 +31,18 @@ foreach my $deck ( @{$unanalyzed_deck_res} ) {
         $deck_id
     );
 
-    my $foo_ref = {};
+    my $relation_ref = {};
 
     for my $card ( @{$cards_res} ) {
 
         my $card_id = $card->{'card_id'};
 
-        if ( $foo_ref->{$card_id} ) {
-            $foo_ref->{$card_id}->{'count'}++;
+        if ( $relation_ref->{$card_id} ) {
+            $relation_ref->{$card_id}->{'count'}++;
             next;
         }
         else {
-            $foo_ref->{$card_id} = { 'count' => 1, relations => {} };
+            $relation_ref->{$card_id} = { 'count' => 1, relations => {} };
         }
 
         for my $other_card ( @{$cards_res} ) {
@@ -52,22 +52,22 @@ foreach my $deck ( @{$unanalyzed_deck_res} ) {
                 next;
             }
 
-            if ( $foo_ref->{$card_id}->{'relations'}->{$other_card_id} ) {
-                $foo_ref->{$card_id}->{'relations'}->{$other_card_id}++;
+            if ( $relation_ref->{$card_id}->{'relations'}->{$other_card_id} ) {
+                $relation_ref->{$card_id}->{'relations'}->{$other_card_id}++;
             }
             else {
-                $foo_ref->{$card_id}->{'relations'}->{$other_card_id} = 1;
+                $relation_ref->{$card_id}->{'relations'}->{$other_card_id} = 1;
             }
 
         }
 
     }
 
-    foreach my $card_id ( keys %{$foo_ref} ) {
+    foreach my $card_id ( keys %{$relation_ref} ) {
 
         # fill cards_usage statistics ( card_id, number in deck, count of times this has occured )
 
-        my $count = $foo_ref->{$card_id}->{'count'};
+        my $count = $relation_ref->{$card_id}->{'count'};
 
         my $cards_usage_res = $dbh->selectrow_hashref( "SELECT * FROM cards_usage WHERE card_id = ? AND number = ? AND event_type_id = ?",
             {}, $card_id, $count, $event_type_id );
@@ -83,7 +83,7 @@ foreach my $deck ( @{$unanalyzed_deck_res} ) {
             $insert_cards_usage_sth->execute( $card_id, $count, $event_type_id );
         }
 
-        foreach my $other_card_id ( keys %{ $foo_ref->{$card_id}->{'relations'} } ) {
+        foreach my $other_card_id ( keys %{ $relation_ref->{$card_id}->{'relations'} } ) {
             my $cards_pair_usage_res
                 = $dbh->selectrow_hashref(
                 "SELECT * FROM cards_pair_usage WHERE first_card_id = ? AND second_card_id = ? AND event_type_id = ?",
