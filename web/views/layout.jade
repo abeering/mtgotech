@@ -5,10 +5,12 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     script(src='/javascripts/jquery.min.js')
     script(src='/javascripts/common.js')
+    script(src='/javascripts/flot/jquery.flot.min.js')
   body
     div#header 
         a.nav(href="/results") Results
         a.nav(href="/cards") Cards
-        input#navsubmit(type='submit',value='Search');
-        input#navsearch(type='text',value='Find Card')
+        form(action='/search/card',method='post',style='margin:0px;padding:0px;display:inline;')
+            input#navsubmit(type='submit',value='Search');
+            input#navsearch(type='text',name='query',value='Find Card')
     div#content.content!= body

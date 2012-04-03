@@ -83,6 +83,11 @@ div#card_info {
 
 /* for the card usage graph */
 
+div#usage_placeholder {
+    width: 450px;
+    height: 200px;
+}
+
 div#usage_graph {
     position: relative;
     width: 450px;

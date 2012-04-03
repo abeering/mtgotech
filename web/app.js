@@ -36,15 +36,16 @@ app.configure('production', function(){
 app.get('/', site.index);
 
 // card pages
-app.get('/card/:id', card.card_info, card.card_usage, card.card_relations, card.display );
-app.get('/card/:id/format/:format', card.filter_format, card.card_info, card.card_usage, card.card_relations, card.display );
+app.get('/card/:id', card.card_info, card.card_usage, card.card_relations, card.daily_usage_statistics, card.display );
+app.get('/card/:id/format/:format', card.filter_format, card.card_info, card.card_usage, card.card_relations, card.daily_usage_statistics, card.display );
 
 // deck pages
 app.get('/deck/:deck_id', deck.deck_info, deck.deck_cards_info, deck.display);
 app.get('/deck/build', deck.build);
 
 // search pages
-app.get('/search/card/:query', search.card_search, search.results );
+app.get('/search/card/:query', search.card_search_partial, search.results );
+app.post('/search/card', search.card_search_partial, search.results );
 app.get('/search', search.index);
 
 app.listen(3000);

@@ -15,44 +15,65 @@ div#card_info
         br
         != card_info.rules_text
     hr
-    p 
-        if filter_format_name
-            span You are currently viewing data for the #{filter_format_name} format.  You can also select: 
-        else 
-            span You can limit these results to a certain format: 
-        - var formats = [ 'All', 'Standard', 'Legacy', 'Modern', 'Pauper' ]
-        each format in formats
-            if format != filter_format_name
-                if format == 'All' 
-                    a.link(href="/card/"+card_info.id)= format
-                else
-                    a.link(href="/card/"+card_info.id+"/format/"+format)= format
-    hr
-    p
-        span This card has been seen in #{card_usage.total_seen} recorded decks.
-        br
-        br
-        span Breakdown by average number in deck: 
-        br
-        div#usage_graph
-            each usage_stat in card_usage.usage_stats
-                - var bar_class = 'used_' + usage_stat.number + '_bar usage_bar'
-                - var bar_style = 'width:' + usage_stat.percentage + '%'
-                if usage_stat.percentage > 1
-                    div(class=bar_class,style=bar_style)
-                        #{usage_stat.number}
-    hr
-    p
-        span This card is most often played with these cards:
-        br
-        span(style='font-size:10px;font-style:italic') ( % represents the percentage of decks which contain #{card_info.name} AND the listed card )
-        each relation in relation_info
-            div.relation_card 
-                span #{relation.name}  
+    if card_usage.total_seen > 0 
+        p
+            span This card has been seen in #{card_usage.total_seen} recorded decks.
+            br
+            br
+            span usage: 
+            span 
+                input.flot_option(type="checkbox",name="Standard",checked="true")
+                label Standard
+                input.flot_option(type="checkbox",name="Legacy",checked="true")
+                label Legacy
+                input.flot_option(type="checkbox",name="Modern",checked="true")
+                label Modern
+                input.flot_option(type="checkbox",name="Pauper",checked="true")
+                label Pauper
+            div#usage_placeholder
+            br
+        hr
+        p 
+            if filter_format_name
+                - var formats = [ 'All Formats', 'Standard', 'Legacy', 'Modern', 'Pauper' ]
+                span You are currently viewing data for the 
+                b #{filter_format_name} 
+                | format.  You can also select: 
                 br
-                span 
-                    b #{relation.percentage}%
-                a(href="/card/"+relation.second_card_id)
-                    img.relation_card_img(src="/cards/"+relation.shortname+"/"+relation.image_name)
+            else 
+                - var formats = [ 'Standard', 'Legacy', 'Modern', 'Pauper' ]
+                span Viewing usage statistics for 
+                b all formats 
+                | - Limit these results to a certain format: 
+                br
+            each format in formats
+                if format != filter_format_name
+                    if format == 'All' 
+                        a.link(href="/card/"+card_info.id)= format
+                    else
+                        a.link(href="/card/"+card_info.id+"/format/"+format)= format
+        p
+            span This card is most often played with these cards:
+            br
+            span(style='font-size:10px;font-style:italic') ( % represents the percentage of decks which contain #{card_info.name} AND the listed card )
+            each relation in relation_info
+                div.relation_card 
+                    span #{relation.name}  
+                    br
+                    span 
+                        b #{relation.percentage}%
+                    a(href="/card/"+relation.second_card_id)
+                        img.relation_card_img(src="/cards/"+relation.shortname+"/"+relation.image_name)
+    else 
+        p
 
+            span This card has not been recorded in any decks.
+
+
+script
+    var data = !{card_daily_usage_data};
+    var color_i = 0;
+           
+    init_graph_options();
+    render_daily_stats();
 

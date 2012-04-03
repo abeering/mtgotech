@@ -12,7 +12,16 @@ pg_client.connect();
 
 exports.display = function( req, res ){
     console.log( "hit card.display" );
-    res.render('card', { "title": req.card_info.name, "card_info": req.card_info, "card_usage": req.card_usage, "relation_info": req.relation_info, "filter_format_name": req.filter_format_name })
+
+    res.render( 'card', { 
+        "title": req.card_info.name, 
+        "card_info": req.card_info, 
+        "card_usage": req.card_usage, 
+        "relation_info": req.relation_info, 
+        "filter_format_name": req.filter_format_name, 
+        "card_usage_plot_data": JSON.stringify(req.card_usage_plot_data),
+        "card_daily_usage_data": JSON.stringify(req.daily_usage_stats) 
+    });
 };
 
 exports.filter_format = function(req, res, next){
@@ -94,6 +103,7 @@ exports.card_usage = function(req, res, next){
 
     var total_seen = 0;
     var usage_info = [];
+    var usage_plot_data = [];
 
     query.on( 'error', function(error){
         res.send(error);
@@ -103,6 +113,7 @@ exports.card_usage = function(req, res, next){
 
         total_seen += row.seen;
         usage_info.push( row );
+        usage_plot_data.push( [ row.number, row.seen ] );
 
     });
 
@@ -112,6 +123,7 @@ exports.card_usage = function(req, res, next){
             usage_info[i].percentage = Math.round( ( (usage_info[i].seen / total_seen) * 100 ));
         }
         
+        req.card_usage_plot_data = usage_plot_data;
         req.card_usage = { 'total_seen': total_seen, 'usage_stats': usage_info };
         next();
     });
@@ -153,3 +165,44 @@ exports.card_relations = function(req, res, next){
         next();
     });
 }
+
+exports.daily_usage_statistics = function(req, res, next){
+    
+    console.log( "hit card.daily_usage_statistics" );
+
+    var query_string = "SELECT cdu.date, et.name AS event_type_name, ddc.total_decks, SUM(cdu.number) as total FROM cards_daily_usage cdu JOIN decks_daily_counts ddc ON( ddc.date = cdu.date AND ddc.event_type_id = cdu.event_type_id ) JOIN event_types et ON( et.id = ddc.event_type_id ) WHERE card_id = $1 AND cdu.date > NOW() - interval '30 days' AND cdu.date < NOW() - interval '1 day' GROUP BY cdu.date, et.name, ddc.total_decks ORDER BY cdu.date, et.name";
+    var query_params = [ req.card_info.id ];
+    console.log( query_string );
+
+    var query = pg_client.query( query_string, query_params );
+
+    var daily_usage_stats = {};
+    // used for graph
+    var color_index = 0;
+
+    query.on( 'error', function(error){
+        res.send(error);
+    });
+
+    query.on( 'row', function(row) {
+
+        var percentage = Math.round( ( ( row.total / row.total_decks ) * 100 ));
+
+        if( daily_usage_stats[ row.event_type_name ] ){
+            daily_usage_stats[ row.event_type_name ].data.push( [ (new Date(row.date)).getTime(), percentage ] );
+        } else { 
+            daily_usage_stats[ row.event_type_name ] = { 'label': row.event_type_name, 'data': [], lines: { 'show': true }, points:{ 'show': true }, color: color_index };
+            color_index++;
+        }
+
+    });
+
+    query.on( 'end', function(row) {
+
+        req.daily_usage_stats = daily_usage_stats;
+
+        next();
+    });
+
+
+};
