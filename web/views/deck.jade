@@ -1,0 +1,50 @@
+- title = deck_info.player_name + "'s Deck"
+
+img#card_image(src="/cards/m12/m12_1.jpg")
+
+div#card_info
+    p 
+        b
+            #{deck_info.player_name}'s
+            #{deck_info.event_name} Deck
+        br
+        | Seen in tournament #
+        a.link(href="/event/"+deck_info.event_id) #{deck_info.event_mtgo_id} 
+        |on #{deck_info.event_date}
+        br
+        if( deck_info.rank )
+            span Placed: #{deck_info.rank}
+            br
+        if( deck_info.wins && deck_info.losses )
+            span Wins: #{deck_info.wins} Losses: #{deck_info.losses}
+            br
+        hr
+
+    - var basic_types = { '1': 'Land', '2': 'Creatures', '3': 'Sorceries', '4': 'Instants', 'null': 'Other Spells' }
+    p
+        div.sideboard_group
+            span.card_group_label Sideboard
+            br
+            each sideboard_card in deck_cards_info.sideboard
+                #{sideboard_card.count} - 
+                a.card_hover_link.link(href="/card/"+sideboard_card.card_id,image="/cards/"+sideboard_card.shortname+"/"+sideboard_card.image_name) #{sideboard_card.name}
+                br
+
+        each maindeck_type_cards, maindeck_card_basic_type in deck_cards_info.maindeck
+            div.card_group
+                span.card_group_label= basic_types[maindeck_card_basic_type]
+                br
+                each maindeck_type_card in maindeck_type_cards 
+                    #{maindeck_type_card.count} - 
+                    if maindeck_card_basic_type == 1
+                        a.card_hover_link.link.help(image="/cards/"+maindeck_type_card.shortname+"/"+maindeck_type_card.image_name) #{maindeck_type_card.name}
+                    else 
+                        a.card_hover_link.link(href="/card/"+maindeck_type_card.card_id,image="/cards/"+maindeck_type_card.shortname+"/"+maindeck_type_card.image_name) #{maindeck_type_card.name}
+
+                    br
+
+    hr
+
+
+
+
