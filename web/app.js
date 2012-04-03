@@ -37,11 +37,11 @@ app.configure('production', function(){
 app.get('/', site.index);
 
 // card pages
-app.get('/card/:id', card.card_info, card.card_usage, card.card_relations, card.daily_usage_statistics, card.display );
-app.get('/card/:id/format/:format', card.filter_format, card.card_info, card.card_usage, card.card_relations, card.daily_usage_statistics, card.display );
+app.get('/card/id/:id', card.card_info, card.card_usage, card.card_relations, card.daily_usage_statistics, card.display );
+app.get('/card/id/:id/format/:format', card.filter_format, card.card_info, card.card_usage, card.card_relations, card.daily_usage_statistics, card.display );
 
 // deck pages
-app.get('/deck/:deck_id', deck.deck_info, deck.deck_cards_info, deck.display);
+app.get('/deck/id/:deck_id', deck.deck_info, deck.deck_cards_info, deck.display);
 // app.get('/deck/build', deck.build);
 
 // event pages
@@ -51,7 +51,6 @@ app.get('/event/mtgoid/:event_id', game_event.event_info_by_mtgoid, game_event.e
 // search pages
 app.get('/search/card/:query', search.card_search_partial, search.results );
 app.post('/search/card', search.card_search_partial, search.results );
-app.get('/search', search.index);
 
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

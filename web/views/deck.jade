@@ -27,7 +27,7 @@ div#card_info
             br
             each sideboard_card in deck_cards_info.sideboard
                 #{sideboard_card.count} - 
-                a.card_hover_link.link(href="/card/"+sideboard_card.card_id,image="/cards/"+sideboard_card.shortname+"/"+sideboard_card.image_name) #{sideboard_card.name}
+                a.card_hover_link.link(href="/card/id/"+sideboard_card.card_id,image="/cards/"+sideboard_card.shortname+"/"+sideboard_card.image_name) #{sideboard_card.name}
                 br
 
         each maindeck_type_cards, maindeck_card_basic_type in deck_cards_info.maindeck
@@ -39,7 +39,7 @@ div#card_info
                     if maindeck_card_basic_type == 1
                         a.card_hover_link.link.help(image="/cards/"+maindeck_type_card.shortname+"/"+maindeck_type_card.image_name) #{maindeck_type_card.name}
                     else 
-                        a.card_hover_link.link(href="/card/"+maindeck_type_card.card_id,image="/cards/"+maindeck_type_card.shortname+"/"+maindeck_type_card.image_name) #{maindeck_type_card.name}
+                        a.card_hover_link.link(href="/card/id/"+maindeck_type_card.card_id,image="/cards/"+maindeck_type_card.shortname+"/"+maindeck_type_card.image_name) #{maindeck_type_card.name}
 
                     br
 

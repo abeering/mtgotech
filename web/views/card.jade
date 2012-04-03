@@ -49,9 +49,9 @@ div#card_info
             each format in formats
                 if format != filter_format_name
                     if format == 'All' 
-                        a.link(href="/card/"+card_info.id)= format
+                        a.link(href="/card/id/"+card_info.id)= format
                     else
-                        a.link(href="/card/"+card_info.id+"/format/"+format)= format
+                        a.link(href="/card/id/"+card_info.id+"/format/"+format)= format
         p
             span This card is most often played with these cards:
             br
@@ -62,7 +62,7 @@ div#card_info
                     br
                     span 
                         b #{relation.percentage}%
-                    a(href="/card/"+relation.second_card_id)
+                    a(href="/card/id/"+relation.second_card_id)
                         img.relation_card_img(src="/cards/"+relation.shortname+"/"+relation.image_name)
     else 
         p
