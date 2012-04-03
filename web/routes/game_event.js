@@ -59,7 +59,7 @@ exports.event_info_by_mtgoid = function(req, res, next){
     });
 
     query.on( 'end', function(row) {
-        req.event_id = event_info.id;
+        req.event_id = req.event_info.id;
         next();
     });
 
