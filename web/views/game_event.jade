@@ -1,18 +1,17 @@
 - title = event_info.name + " " + event_info.date
 
-div#card_info
     p 
         b
             #{event_info.name} ##{event_info.mtgo_id} on #{event_info.date}
         hr
-        table 
+        table.event_table 
             each event_player in event_players_info
                 tr
                     td= event_player.player_name
-                    td
-                        a(href="/deck/"+event_player.deck_id) View Deck
                     if( event_info.rank )
                         td= event_player.rank
                     if( event_player.wins > -1 && event_player.losses > -1 )
                         td #{event_player.wins} - #{event_player.losses}
+                    td
+                        a.link(href="/deck/"+event_player.deck_id) View Deck
 

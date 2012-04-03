@@ -9,7 +9,7 @@ div#card_info
             #{deck_info.event_name} Deck
         br
         | Seen in tournament #
-        a.link(href="/event/"+deck_info.event_id) #{deck_info.event_mtgo_id} 
+        a.link(href="/event/id/"+deck_info.event_id) #{deck_info.event_mtgo_id} 
         |on #{deck_info.event_date}
         br
         if( deck_info.rank )

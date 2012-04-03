@@ -96,27 +96,6 @@ div#usage_graph {
     background-color: gray;
 }
 
-div.usage_bar {
-    float: left;
-    display: block;
-    position: relative;
-    text-align: center;
-    height: 15px;
-}
-
-div.used_4_bar {
-    background-color: #66FF00;
-}
-div.used_3_bar {
-    background-color: #CCFF00;
-}
-div.used_2_bar {
-    background-color: #FF9900;
-}
-div.used_1_bar {
-    background-color: #FF0000;
-}
-
 /* for card relation boxes */
 div.relation_card {
     text-align: center;
@@ -153,6 +132,17 @@ div.sideboard_group {
 
 span.card_group_label {
     font-weight: bold;
+}
+
+/*
+ *
+ *  event page elements
+ *
+ */
+
+table.event_table { 
+    border: 1px solid;
+    padding: 5px; 
 }
 
 /*
@@ -234,6 +224,12 @@ div#card_box {
     padding: 10px;
     float: right;
 }
+
+/* 
+ *
+ * various abstract classes 
+ *
+ */
 
 a {
   color: #00B7FF;
