@@ -14,7 +14,7 @@ client.query(query, function(err, response) {
 });
 
 //var query = 'select?fl=*,score,partial_name&q=*:*&facet=true&facet.field=name_auto&facet.mincount=1&facet.prefix=blade&wt=json';
-var query = 'select?fl=id,name,score&q=partial_name:doom%20trav&wt=json';
+var query = 'select?fl=id,name,score&q=partial_name:doomed%20trav&wt=json';
 
 console.log( query );
 client.get(query, function(err, response) {

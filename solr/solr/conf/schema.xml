@@ -16,14 +16,15 @@
     <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
     <field name="name" type="text" indexed="true" stored="true" required="true" multiValued="false" />
     <field name="partial_name" type="text" indexed="true" stored="true" required="true" multiValued="true" />
-    <field name="series" type="text" indexed="false" stored="true" multiValued="false" />
-    <field name="series_number" type="text" indexed="false" stored="true" multiValued="false" />
+    <field name="set_name" type="text" indexed="false" stored="true" multiValued="false" />
+    <field name="set_shortname" type="text" indexed="false" stored="true" multiValued="false" />
     <field name="card_type" type="text" indexed="false" stored="true" multiValued="false" />
     <field name="mana" type="text" indexed="false" stored="true" multiValued="false" />
     <field name="cmc" type="text" indexed="false" stored="true" multiValued="false" />
     <field name="rarity" type="text" indexed="false" stored="true" multiValued="false" />
     <field name="image_name" type="text" indexed="false" stored="true" multiValued="false" />
     <field name="indexed" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
+    <field name="rules_text" type="text" indexed="true" stored="true" required="false" multiValued="false" />
    
  </fields>
 
