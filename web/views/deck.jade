@@ -8,9 +8,8 @@ div#card_info
             #{deck_info.player_name}'s
             #{deck_info.event_name} Deck
         br
-        | Seen in tournament #
-        a.link(href="/event/id/"+deck_info.event_id) #{deck_info.event_mtgo_id} 
-        |on #{deck_info.event_date}
+        | Seen #{deck_info.event_date} in tournament #
+        a.link(href="/event/id/"+deck_info.event_id) #{deck_info.event_mtgo_id}
         br
         if( deck_info.rank )
             span Placed: #{deck_info.rank}
