@@ -5,6 +5,9 @@
             #{event_info.name} ##{event_info.mtgo_id} on #{event_info.date}
         hr
         table.event_table 
+            tr
+                th Player Name
+                th Rank/Record
             each event_player in event_players_info
                 tr
                     td= event_player.player_name
@@ -13,5 +16,5 @@
                     if( event_player.wins > -1 && event_player.losses > -1 )
                         td #{event_player.wins} - #{event_player.losses}
                     td
-                        a.link(href="/deck/"+event_player.deck_id) View Deck
+                        a.link(href="/deck/id/"+event_player.deck_id) View Deck
 
