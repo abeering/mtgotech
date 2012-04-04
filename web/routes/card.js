@@ -78,8 +78,13 @@ exports.card_info = function(req, res, next){
     });
 
     query.on( 'end', function(row) {
-        req.card_info = info;
-        next();
+
+        if( info ){
+            req.card_info = info;
+            next();
+        } else { 
+            res.redirect('/404');
+        }
     });
 
 };
@@ -170,7 +175,7 @@ exports.daily_usage_statistics = function(req, res, next){
     
     console.log( "hit card.daily_usage_statistics" );
 
-    var query_string = "SELECT cdu.date, et.name AS event_type_name, ddc.total_decks, SUM(cdu.number) as total FROM cards_daily_usage cdu JOIN decks_daily_counts ddc ON( ddc.date = cdu.date AND ddc.event_type_id = cdu.event_type_id ) JOIN event_types et ON( et.id = ddc.event_type_id ) WHERE card_id = $1 AND cdu.date > NOW() - interval '30 days' AND cdu.date < NOW() - interval '1 day' GROUP BY cdu.date, et.name, ddc.total_decks ORDER BY cdu.date, et.name";
+    var query_string = "SELECT ddc.date, et.name AS event_type_name, ddc.total_decks, COALESCE(cdu.number,0) as total FROM decks_daily_counts ddc LEFT JOIN ( SELECT * FROM cards_daily_usage WHERE card_id = $1 AND cards_daily_usage.date > NOW() - interval '30 days' AND cards_daily_usage.date < NOW() - interval '1 day' ) cdu ON( ddc.date = cdu.date AND ddc.event_type_id = cdu.event_type_id ) JOIN event_types et ON( et.id = ddc.event_type_id AND et.id IN( ( SELECT DISTINCT event_type_id FROM cards_daily_usage WHERE card_id = $1 ) ) ) AND ddc.date > NOW() - interval '30 days' AND ddc.date < NOW() - interval '1 day' AND ddc.event_type_id IS NOT NULL ORDER BY ddc.date, et.name";
     var query_params = [ req.card_info.id ];
     console.log( query_string );
 
@@ -179,6 +184,8 @@ exports.daily_usage_statistics = function(req, res, next){
     var daily_usage_stats = {};
     // used for graph
     var color_index = 0;
+    // used for filling gaps
+    var last_date;
 
     query.on( 'error', function(error){
         res.send(error);
