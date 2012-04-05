@@ -1,10 +1,95 @@
+
+div(style="margin: 10px; border: 0px; width:600px")
+    h3 Search Cards
+    form#search_form
+        input#query(type="text",style="height: 25px; width: 250px;",value=query)
+        input#search_submit(type="submit",value="Search");
+
+hr
+
+span 
+    | Found #{num_found} cards.  Viewing page 
+    b #{page_num}
+    |  of 
+    b #{page_ceil}
+
+hr
+br
+
 each result in results
-    div.relation_card 
-        a.link(href='/card/'+result.id)= result.name  
-        br
-        span= result.mana
+    div.search_card_box
+        a.link(href='/card/id/'+result.id)
+            img.search_card_img(src='/cards/'+result.set_shortname+'/'+result.image_name)
+        a.link(href='/card/id/'+result.id)= result.name  
+        span (#{result.mana})
         br
         span= result.card_type
         br
-        a.link(href='/card/id/'+result.id)
-            img.relation_card_img(src='/cards/'+result.set_shortname+'/'+result.image_name)
+        br
+        span !{result.rules_text}
+        br
+
+div#paginate_box
+
+    if page_num == 1
+        li.paginate.deactivated Previous
+    else 
+        a.paginate(href="/search/card/" + query + "/page/" + ( parseInt(page_num) - 1 ) )
+            li.paginate.clickable Previous
+
+    if page_num == page_ceil 
+        li.paginate.deactivated Next Page
+    else 
+        a.paginate(href="/search/card/" + query + "/page/" + ( parseInt(page_num) + 1 ) )
+            li.paginate.clickable Next Page
+
+    br
+    br
+
+    if page_num == 1
+        li.paginate.selected First Page
+    else 
+        a.paginate(href="/search/card/" + query + "/page/1")
+            li.paginate.clickable First Page
+
+    if page_num == page_ceil 
+        li.paginate.selected Last Page
+    else 
+        a.paginate(href="/search/card/" + query + "/page/" + page_ceil)
+            li.paginate.clickable Last Page
+
+    br
+    br
+
+    - for( i=1; i<=page_ceil; i++ ){
+
+        if i == page_num
+            li.paginate.selected Page #{i}
+        else 
+            a.paginate(href="/search/card/" + query + "/page/" + i )
+                li.paginate.clickable Page #{i}
+    - }
+
+
+script
+    $('#query').select();
+    $('#search_form').submit(function(){
+        var query = '/search/card/' + encodeURIComponent( $('#query').val() );
+        window.location.href = '/search/card/' + query;
+    });
+
+    var paginate_box_y = parseInt($('#paginate_box').css("top").substring(0,$('#paginate_box').css("top").indexOf("px")));
+    
+    $(window).scroll(function() {
+
+        var scroll_top = $(document).scrollTop();
+
+        if( scroll_top > paginate_box_y ){
+            $('#paginate_box').animate({top:scroll_top}, {duration:0, queue:false});
+        } else { 
+            $('#paginate_box').animate({top:paginate_box_y}, {duration:0, queue:false});
+        }
+
+    });
+
+
