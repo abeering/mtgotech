@@ -17,23 +17,13 @@ div#card_info
     hr
     if card_usage.total_seen > 0 
         p
-            span This card has been seen in #{card_usage.total_seen} recorded decks.
+            if filter_format_name
+                span This card has been recorded in #{card_usage.total_seen}  
+                b #{filter_format_name} 
+                |  decks.
+            else
+                span This card has been recorded in #{card_usage.total_seen} decks.
             br
-            br
-            span usage: 
-            span 
-
-                input.flot_option(type="checkbox",name="Standard",checked=( filter_format_name && filter_format_name != 'Standard' ? false : true  ) )
-                label Standard
-                //input.flot_option(type="checkbox",name="Legacy",checked=( filter_format_name && filter_format_name != 'Legacy' ? false : true  ) )
-                //label Legacy
-                input.flot_option(type="checkbox",name="Modern",checked=( filter_format_name && filter_format_name != 'Modern' ? false : true  ) )
-                label Modern
-                input.flot_option(type="checkbox",name="Pauper",checked=( filter_format_name && filter_format_name != 'Pauper' ? false : true  ) )
-                label Pauper
-            div#usage_placeholder
-            br
-        hr
         p 
             if filter_format_name
                 - var formats = [ 'All Formats', 'Standard', 'Legacy', 'Modern', 'Pauper' ]
@@ -53,6 +43,35 @@ div#card_info
                         a.link(href="/card/id/"+card_info.id)= format
                     else
                         a.link(href="/card/id/"+card_info.id+"/format/"+format)= format
+        hr
+        if filter_format_name != 'Legacy'
+            p
+                div#usage_placeholder
+                br
+                span Filter graph by format: 
+                span 
+                    input.flot_option(type="checkbox",name="Standard",checked=( filter_format_name && filter_format_name != 'Standard' ? false : true  ) )
+                    label Standard
+                    //input.flot_option(type="checkbox",name="Legacy",checked=( filter_format_name && filter_format_name != 'Legacy' ? false : true  ) )
+                    //label Legacy
+                    input.flot_option(type="checkbox",name="Modern",checked=( filter_format_name && filter_format_name != 'Modern' ? false : true  ) )
+                    label Modern
+                    input.flot_option(type="checkbox",name="Pauper",checked=( filter_format_name && filter_format_name != 'Pauper' ? false : true  ) )
+                    label Pauper
+            br
+            hr
+        p 
+            if filter_format_name
+                - var formats = [ 'All Formats', 'Standard', 'Legacy', 'Modern', 'Pauper' ]
+                span You are currently viewing card relationships for the 
+                b #{filter_format_name} 
+                | format.  
+                br
+            else 
+                - var formats = [ 'Standard', 'Legacy', 'Modern', 'Pauper' ]
+                span Viewing card relationships for 
+                b all formats 
+                br
         p
             span This card is most often played with these cards:
             br
