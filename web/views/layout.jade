@@ -10,7 +10,7 @@ html
     div#header 
         a.nav(href="/results") Results
         a.nav(href="/cards") Cards
-        form(action='/search/card',method='post',style='margin:0px;padding:0px;display:inline;')
-            input#navsubmit(type='submit',value='Search');
-            input#navsearch(type='text',name='query',value='Find Card')
+        form#nav_search_form(style='margin:0px;padding:0px;display:inline;')
+            input#nav_submit(type='submit',value='Search');
+            input#nav_query(type='text',name='query',value='Find Card')
     div#content.content!= body

@@ -63,4 +63,17 @@ $(document).ready( function(){
 
     init_hover_links();
 
+    $('#nav_query').focus(function(){
+        if( 'Find Card' == $(this).val() ){
+            $(this).val('');
+        }
+    });
+
+    $('#nav_search_form').submit(function(){
+        var query = '/search/card/' + encodeURIComponent( $('#nav_query').val() );
+        window.location = query;
+        return false;
+    });
+
+
 });

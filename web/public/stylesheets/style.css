@@ -52,12 +52,12 @@ div.content {
     overflow: auto;
 }
 
-input#navsearch { 
+input#nav_query { 
     float:right; 
     height: 13px;
 }
 
-input#navsubmit {
+input#nav_submit {
     float:right;
     margin-top: -1px;
     margin-left: 5px;
@@ -201,6 +201,15 @@ li.selected {
     cursor: default;
 }
 
+div.search_results_container {
+    padding-left: 140px;
+}
+
+div.single {
+    padding-left: 10px;
+}
+
+/* unused currently */
 div.search_card_box {
     text-align: left;
     font-size: 10px;
@@ -210,15 +219,15 @@ div.search_card_box {
     height: 150px;
     margin-right: 10px;
     margin-bottom: 10px;
-    float: right;
+    float: left;
     overflow: auto;
 }
 
 img.search_card_img {
-    width: 100px;
+    width: 200px;
     float: left;
     margin-right: 10px;
-
+    margin-bottom: 10px;
 }
 
 

@@ -36,7 +36,7 @@ exports.card_search_partial = function( req, res, next ){
 
     var results;
     var query;
-    var query_page_size = 16;
+    var query_page_size = 18;
     var page_num = 1;
 
     if( req.params.query ) {

@@ -59,10 +59,10 @@ app.get('/deck/id/:deck_id', deck.deck_info, deck.deck_cards_info, deck.display)
 app.get('/event/id/:event_id', game_event.event_info_by_id, game_event.event_players_info, game_event.display_event );
 app.get('/event/mtgoid/:event_id', game_event.event_info_by_mtgoid, game_event.event_players_info, game_event.display_event );
 app.get('/events', game_event.recent_events_info, game_event.display_recent_events );
-app.get('/events/all/page?/:page_num?', game_event.all_events_info, game_event.display_all_events );
 
 // search pages
 app.get('/search/card/:query', search.card_search_partial, search.results );
+app.get('/search/card/:query/page/:page_num', search.card_search_partial, search.results );
 app.post('/search/card', search.card_search_partial, search.results );
 
 app.get('/404', function(req,res){

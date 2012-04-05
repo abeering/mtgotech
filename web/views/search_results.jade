@@ -19,18 +19,25 @@ br
 hr
 br
 
-each result in results
-    div.search_card_box
-        a.link(href='/card/id/'+result.id)
-            img.search_card_img(src='/cards/'+result.set_shortname+'/'+result.image_name)
-        a.link(href='/card/id/'+result.id)= result.name  
-        span (#{result.mana})
-        br
-        span= result.card_type
-        br
-        br
-        span !{result.rules_text}
-        br
+if page_ceil > 1 
+    div.search_results_container
+        each result in results
+            a.link(href='/card/id/'+result.id)
+                img.search_card_img(src='/cards/'+result.set_shortname+'/'+result.image_name)
+else 
+    div.search_results_container.single
+        each result in results
+            //div.search_card_box
+            a.link(href='/card/id/'+result.id)
+                img.search_card_img(src='/cards/'+result.set_shortname+'/'+result.image_name)
+            //a.link(href='/card/id/'+result.id)= result.name  
+            //span (#{result.mana})
+            //br
+            //span= result.card_type
+            //br
+            //br
+            //span !{result.rules_text}
+            //br
 
 if page_ceil > 1
     div#paginate_box
@@ -79,8 +86,7 @@ script
     $('#query').focus();
     $('#search_form').submit(function(){
         var query = '/search/card/' + encodeURIComponent( $('#query').val() );
-        window.location.replace( query );
-        alert( 'foo' );
+        window.location = query;
         return false;
     });
 
