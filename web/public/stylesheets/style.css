@@ -46,6 +46,7 @@ div.content {
     margin-top: 10px;
     margin-left: 50px;
     width: 790px;
+    min-height: 500px;
     border: 1px solid;
     padding: 10px;
     overflow: auto;
@@ -154,7 +155,7 @@ table.event_table {
 div#paginate_box {
     position: absolute; 
     left: 75px;
-    top: 200px;
+    top: 250px;
     border: 0px;
     margin: 10px;
     height: 100%;

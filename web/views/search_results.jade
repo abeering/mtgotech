@@ -6,6 +6,7 @@ div(style="margin: 10px; border: 0px; width:600px")
         input#search_submit(type="submit",value="Search");
 
 hr
+br
 
 span 
     | Found #{num_found} cards.  Viewing page 
@@ -13,6 +14,8 @@ span
     |  of 
     b #{page_ceil}
 
+br
+br
 hr
 br
 
@@ -29,53 +32,56 @@ each result in results
         span !{result.rules_text}
         br
 
-div#paginate_box
-
-    if page_num == 1
-        li.paginate.deactivated Previous
-    else 
-        a.paginate(href="/search/card/" + query + "/page/" + ( parseInt(page_num) - 1 ) )
-            li.paginate.clickable Previous
-
-    if page_num == page_ceil 
-        li.paginate.deactivated Next Page
-    else 
-        a.paginate(href="/search/card/" + query + "/page/" + ( parseInt(page_num) + 1 ) )
-            li.paginate.clickable Next Page
-
-    br
-    br
-
-    if page_num == 1
-        li.paginate.selected First Page
-    else 
-        a.paginate(href="/search/card/" + query + "/page/1")
-            li.paginate.clickable First Page
-
-    if page_num == page_ceil 
-        li.paginate.selected Last Page
-    else 
-        a.paginate(href="/search/card/" + query + "/page/" + page_ceil)
-            li.paginate.clickable Last Page
-
-    br
-    br
-
-    - for( i=1; i<=page_ceil; i++ ){
-
-        if i == page_num
-            li.paginate.selected Page #{i}
+if page_ceil > 1
+    div#paginate_box
+    
+        if page_num == 1
+            li.paginate.deactivated Previous
         else 
-            a.paginate(href="/search/card/" + query + "/page/" + i )
-                li.paginate.clickable Page #{i}
-    - }
+            a.paginate(href="/search/card/" + query + "/page/" + ( parseInt(page_num) - 1 ) )
+                li.paginate.clickable Previous
+    
+        if page_num == page_ceil 
+            li.paginate.deactivated Next Page
+        else 
+            a.paginate(href="/search/card/" + query + "/page/" + ( parseInt(page_num) + 1 ) )
+                li.paginate.clickable Next Page
+    
+        br
+        br
+    
+        if page_num == 1
+            li.paginate.selected First Page
+        else 
+            a.paginate(href="/search/card/" + query + "/page/1")
+                li.paginate.clickable First Page
+    
+        if page_num == page_ceil 
+            li.paginate.selected Last Page
+        else 
+            a.paginate(href="/search/card/" + query + "/page/" + page_ceil)
+                li.paginate.clickable Last Page
+    
+        br
+        br
+    
+        - for( i=1; i<=page_ceil; i++ ){
+    
+            if i == page_num
+                li.paginate.selected Page #{i}
+            else 
+                a.paginate(href="/search/card/" + query + "/page/" + i )
+                    li.paginate.clickable Page #{i}
+        - }
 
 
 script
-    $('#query').select();
+    $('#query').focus();
     $('#search_form').submit(function(){
         var query = '/search/card/' + encodeURIComponent( $('#query').val() );
-        window.location.href = '/search/card/' + query;
+        window.location.replace( query );
+        alert( 'foo' );
+        return false;
     });
 
     var paginate_box_y = parseInt($('#paginate_box').css("top").substring(0,$('#paginate_box').css("top").indexOf("px")));
