@@ -40,7 +40,6 @@ exports.card_search_partial = function( req, res, next ){
     var page_num = 1;
 
     if( req.params.query ) {
-        console.log( req.params );
         query = encodeURIComponent( req.params.query );
         if( req.params.page_num ){
             page_num = req.params.page_num;
@@ -49,6 +48,14 @@ exports.card_search_partial = function( req, res, next ){
     } else if ( req.body.query ) {
         query = encodeURIComponent( req.body.query );
     }
+
+    req.query = req.params.query;
+
+    // query is too short - fuck em 
+    if( query.length < 2 ){
+        next();
+        return;
+    }  
 
     var solr_query = 
         'select?wt=json&fl=id,name,set_name,set_shortname,rules_text,name,card_type,mana,cmc,rarity,image_name,score&q=partial_name:' + query;
@@ -69,7 +76,6 @@ exports.card_search_partial = function( req, res, next ){
         req.page_num = page_num;
         req.results = results.docs;
         req.page_ceil = Math.ceil( num_found / query_page_size );
-        req.query = req.params.query;
         req.num_found = results.numFound;
 
         next();
