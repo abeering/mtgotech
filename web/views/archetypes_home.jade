@@ -1,0 +1,29 @@
+center
+    h3 Tracked Archetypes
+
+    if archetypes['Standard']
+        div.daily_list
+            h4 Standard
+            table
+                each standard_archetype in archetypes['Standard']
+                    tr
+                        td
+                            a.link(href="/archetype/id/"+standard_archetype.id) #{standard_archetype.name}
+
+    if archetypes['Modern']
+        div.daily_list
+            h4 Modern
+            table
+                each modern_archetype in archetypes['Modern']
+                    tr
+                        td
+                            a.link(href="/archetype/id/"+modern_archetype.id) #{modern_archetype.name}
+
+    if archetypes['Pauper']
+        div.daily_list
+            h4 Pauper
+            table
+                each pauper_archetype in archetypes['Pauper']
+                    tr
+                        td
+                            a.link(href="/archetype/id/"+pauper_archetype.id) #{pauper_archetype.name}
