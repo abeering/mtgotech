@@ -50,6 +50,7 @@ app.get('/', site.index);
 // card pages
 app.get('/card/id/:id', card.card_info, card.card_usage, card.card_relations, card.daily_usage_statistics, card.display );
 app.get('/card/id/:id/format/:format', card.filter_format, card.card_info, card.card_usage, card.card_relations, card.daily_usage_statistics, card.display );
+app.get('/cards', card.card_home ); 
 
 // deck pages
 app.get('/deck/id/:deck_id', deck.deck_info, deck.deck_cards_info, deck.display);

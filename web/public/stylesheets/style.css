@@ -65,6 +65,17 @@ input#nav_submit {
 
 /*
  *
+ * card home page
+ *
+ */
+
+div.daily_list {
+    width: 175px;
+    display: inline-block;
+}
+
+/*
+ *
  * card page elements 
  *
  */
@@ -151,6 +162,17 @@ table.event_table {
  * card search elements 
  *
  */
+
+input#query { 
+    width: 250px;
+    height: 25px;
+}
+
+input#search_submit {
+    font-weight: bold;
+    margin-left: 10px;
+    height: 35px;
+}
 
 div#paginate_box {
     position: absolute; 
