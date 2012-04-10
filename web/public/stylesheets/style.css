@@ -236,9 +236,18 @@ div.single {
  *
  */
 
+div#archetype_info {
+    padding: 10px;
+    text-align: left;
+    width: 600px;
+    height: 100%;
+    overflow: auto;
+}
+
 img.archetype_card_img { 
-    width: 175px;
+    width: 150px;
     margin-right: 25px;
+    margin-bottom: 25px;
 }
 
 /* unused currently */

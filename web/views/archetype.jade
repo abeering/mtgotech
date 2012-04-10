@@ -1,4 +1,4 @@
-div#card_info
+div#archetype_info
     h2 #{archetype_info.name} (
         i= archetype_info.event_type_name 
         )
@@ -7,5 +7,3 @@ div#card_info
     each archetype_card in archetype_cards
         a(href="/card/id/"+archetype_card.id)
             img.archetype_card_img(src="/cards/"+archetype_card.shortname+"/"+archetype_card.image_name)
-
-
