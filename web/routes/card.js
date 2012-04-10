@@ -12,8 +12,6 @@ pg_client.connect();
 
 exports.card_home = function( req, res ){
 
-    console.log( "hit card.card_home" );
-
     var query_string = "( SELECT 'overall' as type, sco.event_type_id, c.id, c.name, s.shortname, c.image_name, sco.num FROM stats_cards_overall sco JOIN cards c ON( c.id = sco.card_id ) JOIN sets s ON( s.id = c.set_id ) ) UNION ( SELECT 'weekly' AS type, scw.event_type_id, c.id, c.name, s.shortname, c.image_name, scw.num FROM stats_cards_weekly scw JOIN cards c ON( c.id = scw.card_id ) JOIN sets s ON( s.id = c.set_id ) ) ORDER BY type, event_type_id ASC, num DESC";
 
     var query = pg_client.query( query_string );
@@ -42,7 +40,6 @@ exports.card_home = function( req, res ){
 
     query.on( 'end', function(row) {
 
-        console.log( card_stats );
         res.render( 'card_home', { 
             "title": "Cards", 
             "card_stats": card_stats,
@@ -54,7 +51,6 @@ exports.card_home = function( req, res ){
 };
 
 exports.display = function( req, res ){
-    console.log( "hit card.display" );
 
     res.render( 'card', { 
         "title": req.card_info.name, 
@@ -88,15 +84,11 @@ exports.filter_format = function(req, res, next){
             break;
     }
 
-    console.log( 'filtering format to ' + req.filter_format );
-
     next();
 
 }
 
 exports.card_info = function(req, res, next){
-
-    console.log( "hit card.card_info" );
 
     var id = req.params.id;
 
@@ -133,8 +125,6 @@ exports.card_info = function(req, res, next){
 };
 
 exports.card_usage = function(req, res, next){
-
-    console.log( "hit card.card_usage" );
 
     // depends if limit_format was chained
     var query_string;
@@ -179,8 +169,6 @@ exports.card_usage = function(req, res, next){
 
 exports.card_relations = function(req, res, next){
 
-    console.log( "hit card.card_relations" );
-
     var query_string;
     var query_params;
     if( req.filter_format ){
@@ -216,11 +204,8 @@ exports.card_relations = function(req, res, next){
 
 exports.daily_usage_statistics = function(req, res, next){
     
-    console.log( "hit card.daily_usage_statistics" );
-
     var query_string = "SELECT ddc.date, et.name AS event_type_name, ddc.total_decks, COALESCE(cdu.number,0) as total FROM decks_daily_counts ddc LEFT JOIN ( SELECT * FROM cards_daily_usage WHERE card_id = $1 AND cards_daily_usage.date > NOW() - interval '30 days' AND cards_daily_usage.date < NOW() - interval '1 day' ) cdu ON( ddc.date = cdu.date AND ddc.event_type_id = cdu.event_type_id ) JOIN event_types et ON( et.id = ddc.event_type_id AND et.id IN( ( SELECT DISTINCT event_type_id FROM cards_daily_usage WHERE card_id = $1 ) ) ) AND ddc.date > NOW() - interval '30 days' AND ddc.date < NOW() - interval '1 day' AND ddc.event_type_id IS NOT NULL ORDER BY ddc.date, et.name";
     var query_params = [ req.card_info.id ];
-    console.log( query_string );
 
     var query = pg_client.query( query_string, query_params );
 

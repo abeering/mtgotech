@@ -13,8 +13,6 @@ exports.card_search = function( req, res, next ){
 
     var query = encodeURIComponent( req.params.query );
 
-    console.log( query );
-
     var solr_query = 
         'select?wt=json&fl=id,name,set_name,set_shortname,rules_text,name,card_type,mana,cmc,rarity,image_name,score&q=name:' + query;
 
@@ -63,8 +61,6 @@ exports.card_search_partial = function( req, res, next ){
     solr_query += '&rows=' + query_page_size;
     solr_query += '&start=' + query_start;
 
-    console.log( solr_query );
-
     solr_client.get(solr_query, function(solr_err, solr_res) {
         if (solr_err) throw solr_err;
         var solr_res_obj = JSON.parse(solr_res);
@@ -86,8 +82,6 @@ exports.card_search_partial = function( req, res, next ){
 
 exports.results = function(req, res){
 
-    console.log( "hit search.results" );
-
     res.render( 'search_results', { 
         "title": 'card search results',
         "results": req.results,
@@ -99,8 +93,6 @@ exports.results = function(req, res){
 };
 
 exports.index = function(req, res){
-
-    console.log( "hit search index" );
 
 };
 

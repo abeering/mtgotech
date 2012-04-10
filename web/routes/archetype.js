@@ -12,8 +12,6 @@ pg_client.connect();
 
 exports.archetype_home = function( req, res ){
 
-    console.log( "hit archetype.archetype_home" );
-
     var query_string = "SELECT a.*, et.name AS event_type_name FROM archetypes a JOIN event_types et ON( et.id = a.event_type_id ) ORDER BY a.event_type_id ASC, a.name ASC";
 
     var query = pg_client.query( query_string );
@@ -47,7 +45,6 @@ exports.archetype_home = function( req, res ){
 };
 
 exports.display_archetype = function( req, res ){
-    console.log( "hit archetype.display_archetype" );
 
     res.render( 'archetype', { 
         "title": req.archetype_info.name, 
@@ -60,8 +57,6 @@ exports.display_archetype = function( req, res ){
 
 exports.archetype_info = function(req, res, next){
 
-    console.log( "hit archetype.archetype_info" );
-
     var id = req.params.id;
 
     var query_string;
@@ -69,7 +64,6 @@ exports.archetype_info = function(req, res, next){
     if( !isNaN(parseFloat(id)) && isFinite(id) ){
         query_string = "SELECT a.*, et.name AS event_type_name FROM archetypes a JOIN event_types et ON( et.id = a.event_type_id ) WHERE a.id = $1";
     } 
-    console.log( query_string );
 
     var query = pg_client.query( query_string, [ id ] );
 
@@ -97,7 +91,6 @@ exports.archetype_info = function(req, res, next){
 
 exports.archetype_cards = function(req, res, next){
 
-    console.log( "hit archetype.archetype_cards" );
 
     var query_string = "SELECT c.*, s.shortname FROM archetypes_cards ac JOIN cards c ON( c.id = ac.card_id ) JOIN sets s ON( s.id = c.set_id ) WHERE ac.archetype_id = $1";
 
@@ -125,14 +118,12 @@ exports.archetype_cards = function(req, res, next){
 
 exports.archetype_usage = function(req, res, next){
     
-    console.log( "hit card.daily_usage_statistics" );
     // FIXME
         next();
     /*
 
     var query_string = "SELECT ddc.date, et.name AS event_type_name, ddc.total_decks, COALESCE(cdu.number,0) as total FROM decks_daily_counts ddc LEFT JOIN ( SELECT * FROM cards_daily_usage WHERE card_id = $1 AND cards_daily_usage.date > NOW() - interval '30 days' AND cards_daily_usage.date < NOW() - interval '1 day' ) cdu ON( ddc.date = cdu.date AND ddc.event_type_id = cdu.event_type_id ) JOIN event_types et ON( et.id = ddc.event_type_id AND et.id IN( ( SELECT DISTINCT event_type_id FROM cards_daily_usage WHERE card_id = $1 ) ) ) AND ddc.date > NOW() - interval '30 days' AND ddc.date < NOW() - interval '1 day' AND ddc.event_type_id IS NOT NULL ORDER BY ddc.date, et.name";
     var query_params = [ req.card_info.id ];
-    console.log( query_string );
 
     var query = pg_client.query( query_string, query_params );
 

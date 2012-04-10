@@ -11,14 +11,10 @@ var pg_client = new pg.Client(con_string);
 pg_client.connect();
 
 exports.display = function( req, res ){
-    console.log( "hit deck.display" );
-    console.log( req.deck_info );
     res.render('deck', { "title": 'Viewing Deck', "deck_info": req.deck_info, "deck_cards_info": req.deck_cards_info })
 };
 
 exports.deck_info = function(req, res, next){
-
-    console.log( "hit deck.deck_info" );
 
     var deck_id = req.params.deck_id;
 
@@ -41,8 +37,6 @@ exports.deck_info = function(req, res, next){
 };
 
 exports.deck_cards_info = function(req, res, next){
-
-    console.log( "hit deck.deck_cards_info" );
 
     var deck_id = req.params.deck_id;
 
@@ -73,7 +67,6 @@ exports.deck_cards_info = function(req, res, next){
     });
 
     query.on( 'end', function(row) {
-        console.log( info );
         req.deck_cards_info = info;
         next();
     });
