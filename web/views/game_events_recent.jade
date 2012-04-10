@@ -14,9 +14,9 @@ center
                         span= standard_event.date
 
     div.daily_list
-        h4 Standard
+        h4 Modern
         table
-            each modern_event in events['Standard']
+            each modern_event in events['Modern']
                 tr
                     td
                         a.link(href="/event/id/"+modern_event.id) #{modern_event.name} 
@@ -24,9 +24,9 @@ center
                         span= modern_event.date
 
     div.daily_list
-        h4 Standard
+        h4 Pauper
         table
-            each pauper_event in events['Standard']
+            each pauper_event in events['Pauper']
                 tr
                     td
                         a.link(href="/event/id/"+pauper_event.id) #{pauper_event.name} 
