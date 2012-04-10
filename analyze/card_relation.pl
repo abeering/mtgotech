@@ -105,6 +105,12 @@ foreach my $deck ( @{$unanalyzed_deck_res} ) {
 
 
     # check for archetypes
+    # get archetypes
+    # foo = 
+    for my $card ( @{$cards_res} ) {
+        print Dumper( $card );
+        die;
+    }
 
 
     my $update_deck_state = $dbh->prepare( "UPDATE decks SET analyzed = 't' WHERE id = ?" );
