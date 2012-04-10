@@ -10,6 +10,49 @@ var con_string = "tcp://postgres@localhost/decklist";
 var pg_client = new pg.Client(con_string);
 pg_client.connect();
 
+exports.card_home = function( req, res ){
+
+    console.log( "hit card.card_home" );
+
+    var query_string = "( SELECT 'overall' as type, sco.event_type_id, c.id, c.name, s.shortname, c.image_name, sco.num FROM stats_cards_overall sco JOIN cards c ON( c.id = sco.card_id ) JOIN sets s ON( s.id = c.set_id ) ) UNION ( SELECT 'weekly' AS type, scw.event_type_id, c.id, c.name, s.shortname, c.image_name, scw.num FROM stats_cards_weekly scw JOIN cards c ON( c.id = scw.card_id ) JOIN sets s ON( s.id = c.set_id ) ) ORDER BY type, event_type_id ASC, num DESC";
+
+    var query = pg_client.query( query_string );
+
+    var card_stats = {};
+
+    query.on( 'error', function(error){
+        res.send(error);
+    });
+
+    query.on( 'row', function(row) {
+
+        if( card_stats[ row.type ] ) {
+            if( card_stats[ row.type ][ row.event_type_id ] ){
+                card_stats[ row.type ][ row.event_type_id ].push( row );
+            } else {
+                card_stats[ row.type ][ row.event_type_id ] = [ row ];
+            } 
+        } else {
+            var foo = {};
+            foo[ row.event_type_id ] = [ row ];
+            card_stats[ row.type ] = foo;
+        }
+
+    });
+
+    query.on( 'end', function(row) {
+
+        console.log( card_stats );
+        res.render( 'card_home', { 
+            "title": "Cards", 
+            "card_stats": card_stats,
+        });
+
+    });
+
+
+};
+
 exports.display = function( req, res ){
     console.log( "hit card.display" );
 
