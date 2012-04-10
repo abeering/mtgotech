@@ -13,7 +13,7 @@ pg_client.connect();
 exports.display = function( req, res ){
     console.log( "hit deck.display" );
     console.log( req.deck_info );
-    res.render('deck', { "title": 'foo', "deck_info": req.deck_info, "deck_cards_info": req.deck_cards_info })
+    res.render('deck', { "title": 'Viewing Deck', "deck_info": req.deck_info, "deck_cards_info": req.deck_cards_info })
 };
 
 exports.deck_info = function(req, res, next){
