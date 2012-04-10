@@ -230,6 +230,17 @@ div.single {
     padding-left: 10px;
 }
 
+/* 
+ *
+ * archetype pages
+ *
+ */
+
+img.archetype_card_img { 
+    width: 175px;
+    margin-right: 25px;
+}
+
 /* unused currently */
 div.search_card_box {
     text-align: left;

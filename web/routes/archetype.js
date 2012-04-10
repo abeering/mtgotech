@@ -53,8 +53,9 @@ exports.display_archetype = function( req, res ){
         "title": req.archetype_info.name, 
         "archetype_info": req.archetype_info, 
         "archetype_cards": req.archetype_cards, 
-        "archetype_usage_plot_data": JSON.stringify(req.archetype_usage_plot_data),
+        //"archetype_usage_plot_data": JSON.stringify(req.archetype_usage_plot_data),
     });
+
 };
 
 exports.archetype_info = function(req, res, next){
