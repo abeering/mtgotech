@@ -10,9 +10,14 @@ var con_string = "tcp://postgres@localhost/decklist";
 var pg_client = new pg.Client(con_string);
 pg_client.connect();
 
-exports.display = function( req, res ){
-    console.log( "hit game_event.display" );
+exports.display_event = function( req, res ){
+    console.log( "hit game_event.display_event" );
     res.render('game_event', { "event_info": req.event_info, "event_players_info": req.event_players_info })
+};
+
+exports.display_recent_events = function( req, res ){
+    console.log( "hit game_event.display_recent_events" );
+    res.render( 'game_events_recent', { "title": "Recent Events", "events": req.events } );
 };
 
 exports.event_info_by_id = function(req, res, next){
@@ -60,6 +65,36 @@ exports.event_info_by_mtgoid = function(req, res, next){
 
     query.on( 'end', function(row) {
         req.event_id = req.event_info.id;
+        next();
+    });
+
+};
+
+exports.recent_events_info = function(req, res, next){
+
+    console.log( "hit game_event.recent_events_info" );
+
+    var event_id = req.params.event_id;
+
+    var query = pg_client.query( "( SELECT e.*, et.name AS event_type_name FROM events e JOIN event_types et ON( et.id = e.event_type_id ) WHERE e.event_type_id = 1 ORDER BY date DESC LIMIT 15 ) UNION ( SELECT e.*, et.name AS event_type_name FROM events e JOIN event_types et ON( et.id = e.event_type_id ) WHERE e.event_type_id = 3 ORDER BY date DESC LIMIT 15 ) UNION ( SELECT e.*, et.name AS event_type_name FROM events e JOIN event_types et ON( et.id = e.event_type_id ) WHERE e.event_type_id = 4 ORDER BY date DESC LIMIT 15 ) ORDER BY event_type_id ASC, date DESC" );
+
+    var events = {};
+
+    query.on( 'error', function(error){
+        res.send(error);
+    });
+
+    query.on( 'row', function(row) {
+        if( events[ row.event_type_name ] ) {
+            events[ row.event_type_name ].push( row );
+        } else {
+            events[ row.event_type_name ] = [ row ];
+        }
+    });
+
+    query.on( 'end', function(row) {
+        console.log( events );
+        req.events = events;
         next();
     });
 

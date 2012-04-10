@@ -1,0 +1,34 @@
+
+br
+
+center
+    h3 Recent Events
+    div.daily_list
+        h4 Standard
+        table
+            each standard_event in events['Standard']
+                tr
+                    td
+                        a.link(href="/event/id/"+standard_event.id) #{standard_event.name}
+                    td
+                        span= standard_event.date
+
+    div.daily_list
+        h4 Standard
+        table
+            each modern_event in events['Standard']
+                tr
+                    td
+                        a.link(href="/event/id/"+modern_event.id) #{modern_event.name} 
+                    td
+                        span= modern_event.date
+
+    div.daily_list
+        h4 Standard
+        table
+            each pauper_event in events['Standard']
+                tr
+                    td
+                        a.link(href="/event/id/"+pauper_event.id) #{pauper_event.name} 
+                    td
+                        span= pauper_event.date
