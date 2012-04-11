@@ -1,9 +1,26 @@
 div#archetype_info
     h2 #{archetype_info.name} (
         i= archetype_info.event_type_name 
-        )
+        |  )
 
     hr
-    each archetype_card in archetype_cards
-        a(href="/card/id/"+archetype_card.id)
-            img.archetype_card_img(src="/cards/"+archetype_card.shortname+"/"+archetype_card.image_name)
+    p
+        h4 Archetype Usage
+        div#usage_placeholder
+    p
+        h4 Core Cards:
+        each archetype_card in archetype_cards
+            a(href="/card/id/"+archetype_card.id)
+                img.archetype_card_img(src="/cards/"+archetype_card.shortname+"/"+archetype_card.image_name)
+
+
+script
+    var data = !{archetype_usage_plot_data};
+    $.plot( $('#usage_placeholder'), 
+        [ data ],  
+        { 
+            legend: { backgroundOpacity: .5, position: 'nw' },
+            xaxis: { mode: 'time', minTickSize: [ 1, "day"], },
+            yaxis: { min: 0, max: 100 },
+        }
+    ); 

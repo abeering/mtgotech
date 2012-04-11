@@ -50,7 +50,7 @@ exports.display_archetype = function( req, res ){
         "title": req.archetype_info.name, 
         "archetype_info": req.archetype_info, 
         "archetype_cards": req.archetype_cards, 
-        //"archetype_usage_plot_data": JSON.stringify(req.archetype_usage_plot_data),
+        "archetype_usage_plot_data": JSON.stringify(req.archetype_usage_plot_data),
     });
 
 };
@@ -118,44 +118,38 @@ exports.archetype_cards = function(req, res, next){
 
 exports.archetype_usage = function(req, res, next){
     
-    // FIXME
-        next();
-    /*
+    var query_string = "SELECT ddc.date, ddc.event_type_id, ddc.total_decks, COALESCE( aa.count, 0 ) AS number FROM decks_daily_counts ddc LEFT JOIN ( SELECT e.date, e.event_type_id, a.name, COUNT(*) FROM decks d JOIN archetypes a ON( a.id = d.archetype_id ) JOIN events_players ep ON( ep.deck_id = d.id ) JOIN events e ON( e.id = ep.event_id ) WHERE d.archetype_id = $1 AND e.date > NOW() - interval '14 days' AND e.date < NOW() - interval '1 day' GROUP BY e.date, e.event_type_id, a.name ) aa ON( aa.date = ddc.date AND aa.event_type_id = ddc.event_type_id ) WHERE ddc.date > NOW() - interval '14 days' AND ddc.date < NOW() - interval '1 day' AND ddc.event_type_id = ( SELECT event_type_id FROM archetypes WHERE id = $1 )";
 
-    var query_string = "SELECT ddc.date, et.name AS event_type_name, ddc.total_decks, COALESCE(cdu.number,0) as total FROM decks_daily_counts ddc LEFT JOIN ( SELECT * FROM cards_daily_usage WHERE card_id = $1 AND cards_daily_usage.date > NOW() - interval '30 days' AND cards_daily_usage.date < NOW() - interval '1 day' ) cdu ON( ddc.date = cdu.date AND ddc.event_type_id = cdu.event_type_id ) JOIN event_types et ON( et.id = ddc.event_type_id AND et.id IN( ( SELECT DISTINCT event_type_id FROM cards_daily_usage WHERE card_id = $1 ) ) ) AND ddc.date > NOW() - interval '30 days' AND ddc.date < NOW() - interval '1 day' AND ddc.event_type_id IS NOT NULL ORDER BY ddc.date, et.name";
-    var query_params = [ req.card_info.id ];
+    var query_params = [ req.archetype_info.id ];
 
     var query = pg_client.query( query_string, query_params );
 
-    var daily_usage_stats = {};
-    // used for graph
-    var color_index = 0;
-    // used for filling gaps
-    var last_date;
+    var archetype_daily_usage = { 
+        'label': req.archetype_info.name, 
+        lines: { 'show': true }, 
+        points: { 'show': true }, 
+        color: 0,
+        data: []
+    };
 
     query.on( 'error', function(error){
+        console.log( error );
         res.send(error);
     });
 
     query.on( 'row', function(row) {
 
-        var percentage = Math.round( ( ( row.total / row.total_decks ) * 100 ));
+        var percentage = Math.round( ( ( row.number / row.total_decks ) * 100 ));
 
-        if( daily_usage_stats[ row.event_type_name ] ){
-            daily_usage_stats[ row.event_type_name ].data.push( [ (new Date(row.date)).getTime(), percentage ] );
-        } else { 
-            daily_usage_stats[ row.event_type_name ] = { 'label': row.event_type_name, 'data': [], lines: { 'show': true }, points:{ 'show': true }, color: color_index };
-            color_index++;
-        }
+        archetype_daily_usage.data.push( [ (new Date(row.date)).getTime(), percentage ] );
 
     });
 
     query.on( 'end', function(row) {
 
-        req.daily_usage_stats = daily_usage_stats;
+        req.archetype_usage_plot_data = archetype_daily_usage;
 
         next();
     });
-    */
 
 };
