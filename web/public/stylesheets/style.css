@@ -154,6 +154,7 @@ span.card_group_label {
 table.event_table { 
     border: 1px solid;
     padding: 5px; 
+    text-align: left;
 }
 
 /*

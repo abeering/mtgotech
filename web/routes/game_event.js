@@ -95,11 +95,12 @@ exports.event_players_info = function(req, res, next){
 
     var event_id = req.event_id;
 
-    var query = pg_client.query( "SELECT ep.player_id, ep.rank, ep.wins, ep.losses, ep.deck_id, p.name AS player_name FROM events_players ep JOIN players p ON( p.id = ep.player_id ) WHERE ep.event_id = $1 ORDER BY rank DESC, wins DESC", [ event_id ] );
+    var query = pg_client.query( "SELECT ep.player_id, ep.rank, ep.wins, ep.losses, ep.deck_id, p.name AS player_name, a.id AS archetype_id, a.name AS archetype_name FROM events_players ep JOIN players p ON( p.id = ep.player_id ) JOIN decks d ON( ep.deck_id = d.id ) LEFT JOIN archetypes a ON( a.id = d.archetype_id ) WHERE ep.event_id = $1 ORDER BY rank ASC, wins DESC", [ event_id ] );
 
     var players = [];
 
     query.on( 'error', function(error){
+        console.log( error );
         res.send(error);
     });
 

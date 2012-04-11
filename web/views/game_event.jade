@@ -6,15 +6,23 @@
         hr
         table.event_table 
             tr
-                th Player Name
-                th Rank/Record
+                th(style="width:150px") Player Name
+                th(style="width:125px") Rank/Record
+                th(style="width:150px") Deck Archetype
             each event_player in event_players_info
                 tr
                     td= event_player.player_name
-                    if( event_info.rank )
+                    if( event_player.rank )
                         td= event_player.rank
-                    if( event_player.wins > -1 && event_player.losses > -1 )
+                    else if( event_player.wins >= 0 && event_player.losses >= 0 )
                         td #{event_player.wins} - #{event_player.losses}
+                    else 
+                        td Unknown
+                    if( event_player.archetype_name )
+                        td 
+                            a.link(href="/archetype/id/"+event_player.archetype_id,style="margin-left: 0px;")= event_player.archetype_name
+                    else 
+                        td Unknown #{event_player.archetype_name}
                     td
                         a.link(href="/deck/id/"+event_player.deck_id) View Deck
 
