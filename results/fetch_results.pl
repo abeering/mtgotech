@@ -142,7 +142,7 @@ foreach my $event_id (@event_ids) {
 
         # create deck + event_player record
         my $deck_id;
-        my $decks_sth = $dbh->prepare("INSERT INTO decks ( name, type, player_id ) VALUES ( ?, ?, ? ) RETURNING id");
+        my $decks_sth = $dbh->prepare("INSERT INTO decks ( name, type, player_id, analyzed ) VALUES ( ?, ?, ?, 'f' ) RETURNING id");
         $decks_sth->execute( undef, undef, $player_id );
         $deck_id = $decks_sth->fetch()->[0];
         my $events_players_sth
