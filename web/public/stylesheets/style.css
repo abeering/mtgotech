@@ -1,16 +1,19 @@
 body {
-    font: 12px Tahoma;
+    font: 13px "Helvetica Neue", "Lucida Grande", "Arial";
     background-color: whitesmoke;
     padding: 0px;
     height: 2000px;
 }
 
 a.link {
-    font: 12px Tahoma;
     color: blue;
     font-weight: normal;
     margin-left: 2px; 
     margin-right: 2px;
+}
+
+a.link:visited {
+    color: purple;
 }
 
 /* 
@@ -33,7 +36,7 @@ a.nav {
     margin-right: 15px;
     margin-left: 15px;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 16px;
     color: black;
 }
 
@@ -110,7 +113,7 @@ div#usage_graph {
 /* for card relation boxes */
 div.relation_card {
     text-align: center;
-    font-size: 10px;
+    font-size: 12px;
     border: 1px solid;
     padding: 5px; 
     width: 140px; 
