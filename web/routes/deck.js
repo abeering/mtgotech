@@ -18,7 +18,7 @@ exports.deck_info = function(req, res, next){
 
     var deck_id = req.params.deck_id;
 
-    var query = pg_client.query( "SELECT ep.rank, ep.wins, ep.losses, e.name AS event_name, e.mtgo_id as event_mtgo_id, e.date as event_date, e.id as event_id, p.name AS player_name FROM decks d JOIN events_players ep ON( d.id = ep.deck_id ) JOIN events e ON( e.id = ep.event_id ) JOIN players p ON( p.id = ep.player_id ) WHERE d.id = $1", [ deck_id ] );
+    var query = pg_client.query( "SELECT ep.rank, ep.wins, ep.losses, e.name AS event_name, e.mtgo_id as event_mtgo_id, e.date as event_date, e.id as event_id, p.name AS player_name, a.name AS archetype_name, a.id AS archetype_id FROM decks d JOIN events_players ep ON( d.id = ep.deck_id ) JOIN events e ON( e.id = ep.event_id ) JOIN players p ON( p.id = ep.player_id ) LEFT JOIN archetypes a ON( d.archetype_id = a.id ) WHERE d.id = $1", [ deck_id ] );
 
     query.on( 'error', function(error){
         res.send(error);

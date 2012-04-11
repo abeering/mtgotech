@@ -1,6 +1,6 @@
 - title = deck_info.player_name + "'s Deck"
 
-img#card_image(src="/cards/m12/m12_1.jpg")
+img#card_image(src="/cards/blank.jpg")
 
 div#card_info
     p 
@@ -14,9 +14,14 @@ div#card_info
         if( deck_info.rank )
             span Placed: #{deck_info.rank}
             br
-        if( deck_info.wins && deck_info.losses )
+        if( deck_info.wins >= 0 && deck_info.losses >= 0 )
             span Wins: #{deck_info.wins} Losses: #{deck_info.losses}
             br
+        if( deck_info.archetype_id )
+            br
+            span This deck matches the 
+                a.link(href="/archetype/id/"+deck_info.archetype_id)= deck_info.archetype_name
+                |  archetype.
         hr
 
     - var basic_types = { '0': 'Basic Land', '1': 'Land', '2': 'Creatures', '3': 'Sorceries', '4': 'Instants', 'null': 'Other Spells' }
