@@ -68,7 +68,7 @@ exports.recent_events_info = function(req, res, next){
 
     var event_id = req.params.event_id;
 
-    var query = pg_client.query( "( SELECT e.*, et.name AS event_type_name FROM events e JOIN event_types et ON( et.id = e.event_type_id ) WHERE e.event_type_id = 1 ORDER BY date DESC LIMIT 15 ) UNION ( SELECT e.*, et.name AS event_type_name FROM events e JOIN event_types et ON( et.id = e.event_type_id ) WHERE e.event_type_id = 3 ORDER BY date DESC LIMIT 15 ) UNION ( SELECT e.*, et.name AS event_type_name FROM events e JOIN event_types et ON( et.id = e.event_type_id ) WHERE e.event_type_id = 4 ORDER BY date DESC LIMIT 15 ) ORDER BY event_type_id ASC, date DESC" );
+    var query = pg_client.query( "( SELECT e.*, et.name AS event_type_name FROM events e JOIN event_types et ON( et.id = e.event_type_id ) WHERE e.event_type_id = 1 ORDER BY date DESC LIMIT $1 ) UNION ( SELECT e.*, et.name AS event_type_name FROM events e JOIN event_types et ON( et.id = e.event_type_id ) WHERE e.event_type_id = 3 ORDER BY date DESC LIMIT $1 ) UNION ( SELECT e.*, et.name AS event_type_name FROM events e JOIN event_types et ON( et.id = e.event_type_id ) WHERE e.event_type_id = 4 ORDER BY date DESC LIMIT $1 ) ORDER BY event_type_id ASC, date DESC", [ 25 ] );
 
     var events = {};
 
