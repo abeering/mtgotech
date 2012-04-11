@@ -19,7 +19,7 @@ div#card_info
             br
         hr
 
-    - var basic_types = { '1': 'Land', '2': 'Creatures', '3': 'Sorceries', '4': 'Instants', 'null': 'Other Spells' }
+    - var basic_types = { '0': 'Basic Land', '1': 'Land', '2': 'Creatures', '3': 'Sorceries', '4': 'Instants', 'null': 'Other Spells' }
     p
         div.sideboard_group
             span.card_group_label Sideboard
@@ -35,7 +35,8 @@ div#card_info
                 br
                 each maindeck_type_card in maindeck_type_cards 
                     #{maindeck_type_card.count} - 
-                    if maindeck_card_basic_type == 1
+
+                    if maindeck_card_basic_type == 0
                         a.card_hover_link.link.help(image="/cards/"+maindeck_type_card.shortname+"/"+maindeck_type_card.image_name) #{maindeck_type_card.name}
                     else 
                         a.card_hover_link.link(href="/card/id/"+maindeck_type_card.card_id,image="/cards/"+maindeck_type_card.shortname+"/"+maindeck_type_card.image_name) #{maindeck_type_card.name}
