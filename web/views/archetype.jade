@@ -13,6 +13,24 @@ div#archetype_info
             a(href="/card/id/"+archetype_card.id)
                 img.archetype_card_img(src="/cards/"+archetype_card.shortname+"/"+archetype_card.image_name)
 
+    if archetype_recent_decks.length > 0
+        p
+            h4 Recent Decks
+            table.event_table 
+                tr
+                    th(style="width:150px") Player Name
+                    th(style="width:125px") Rank/Record
+                each deck in archetype_recent_decks
+                    tr
+                        td= deck.player_name
+                        if( deck.rank )
+                            td= deck.rank
+                        else if( deck.wins >= 0 && deck.losses >= 0 )
+                            td #{deck.wins} - #{deck.losses}
+                        else 
+                            td Unknown
+                        td
+                            a.link(href="/deck/id/"+deck.id) View Deck
 
 script
     var data = !{archetype_usage_plot_data};

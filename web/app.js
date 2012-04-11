@@ -64,7 +64,7 @@ app.get('/events', game_event.recent_events_info, game_event.display_recent_even
 
 // archetype pages
 app.get('/archetypes', archetype.archetype_home );
-app.get('/archetype/id/:id', archetype.archetype_info, archetype.archetype_cards, archetype.archetype_usage, archetype.display_archetype );
+app.get('/archetype/id/:id', archetype.archetype_info, archetype.archetype_cards, archetype.archetype_usage, archetype.archetype_recent_decks, archetype.display_archetype );
 
 // search pages
 app.get('/search/card/:query', search.card_search_partial, search.results );

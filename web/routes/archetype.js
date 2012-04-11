@@ -51,6 +51,7 @@ exports.display_archetype = function( req, res ){
         "archetype_info": req.archetype_info, 
         "archetype_cards": req.archetype_cards, 
         "archetype_usage_plot_data": JSON.stringify(req.archetype_usage_plot_data),
+        "archetype_recent_decks": req.archetype_recent_decks,
     });
 
 };
@@ -153,3 +154,33 @@ exports.archetype_usage = function(req, res, next){
     });
 
 };
+
+exports.archetype_recent_decks = function( req, res, next ){
+
+    var query_string = "SELECT d.id, ep.event_id, ep.wins, ep.losses, ep.rank, p.name as player_name, e.name as event_name, e.date as event_date FROM decks d JOIN events_players ep ON( ep.deck_id = d.id ) JOIN events e ON( e.id = ep.event_id ) JOIN players p ON( p.id = ep.player_id ) WHERE d.archetype_id = $1 ORDER BY e.date DESC LIMIT 20";
+
+    var query = pg_client.query( query_string, [ req.archetype_info.id ] );
+
+    var recent_decks = [];
+
+    query.on( 'error', function(error){
+        console.log( error );
+        res.send(error);
+    });
+
+    query.on( 'row', function(row) {
+    
+        recent_decks.push( row );
+
+    });
+
+    query.on( 'end', function(row) {
+
+        req.archetype_recent_decks = recent_decks;
+
+        next();
+    });
+
+}
+
+
