@@ -132,6 +132,13 @@ img.relation_card_img {
  *
  */
 
+div#deck_info {
+    padding: 10px;
+    text-align: left;
+    width: 500px;
+    height: 100%;
+}
+
 div.card_group { 
     border: 0px;
     padding: 5px;
