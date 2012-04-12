@@ -47,6 +47,9 @@ div#card_info
         hr
         if filter_format_name != 'Legacy'
             p
+                b Daily Usage
+                br
+                span(style='font-size:10px;font-style:italic') This graph represents the daily % of all decks which contained this card by format.
                 div#usage_placeholder
                 br
                 span Filter graph by format: 
@@ -59,7 +62,6 @@ div#card_info
                     label Modern
                     input.flot_option(type="checkbox",name="Pauper",checked=( filter_format_name && filter_format_name != 'Pauper' ? false : true  ) )
                     label Pauper
-            br
             hr
         p 
             if filter_format_name
@@ -76,7 +78,7 @@ div#card_info
         p
             span This card is most often played with these cards:
             br
-            span(style='font-size:10px;font-style:italic') ( % represents the percentage of decks which contain #{card_info.name} AND the listed card )
+            span(style='font-size:10px;font-style:italic') ( % represents the percentage of all decks which contain #{card_info.name} AND the listed card )
             each relation in relation_info
                 div.relation_card 
                     span #{relation.name}  

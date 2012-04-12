@@ -5,17 +5,20 @@ div#archetype_info
 
     hr
     p
-        h4 Archetype Usage
+        b Archetype Usage
+        br
+        span(style='font-size:10px;font-style:italic') This graph represents the daily % of all decks matching this archetype.
         div#usage_placeholder
+        br
     p
-        h4 Core Cards:
+        h4 Core Cards
         each archetype_card in archetype_cards
             a(href="/card/id/"+archetype_card.id)
                 img.archetype_card_img(src="/cards/"+archetype_card.shortname+"/"+archetype_card.image_name)
 
     if archetype_recent_decks.length > 0
         p
-            h4 Recent Decks
+            b Recent Decks
             table.event_table 
                 tr
                     th(style="width:150px") Player Name
