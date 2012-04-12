@@ -17,7 +17,10 @@ exports.card_search = function( req, res, next ){
         'select?wt=json&fl=id,name,set_name,set_shortname,rules_text,name,card_type,mana,cmc,rarity,image_name,score&q=name:' + query;
 
     solr_client.get(solr_query, function(solr_err, solr_res) {
-        if (solr_err) throw solr_err;
+        if (solr_err) {
+            results = [];
+            next();
+        }
         var solr_res_obj = JSON.parse(solr_res);
 
         results = solr_res_obj.response;
