@@ -33,7 +33,7 @@ app.configure('development', function(){
 
 app.configure('production', function(){
     app.use(express.errorHandler());
-    app.listen(80);
+    app.listen(8000);
 });
 
 app.error(function(err, req, res, next){
