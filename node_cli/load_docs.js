@@ -9,7 +9,7 @@ pg_client.connect();
 var solr_client = solr.createClient();
 
 var query = pg_client.query( 
-    "SELECT c.id, c.name, c.mana, c.rarity, c.type, c.rules_text, c.image_name, s.shortname, s.name as set_name FROM cards c JOIN sets s ON (c.set_id = s.id) WHERE c.parent_id IS NULL" 
+    "SELECT c.id, c.name, c.mana, c.rarity, c.type, c.rules_text, c.image_name, c.rules_text, s.shortname, s.name as set_name FROM cards c JOIN sets s ON (c.set_id = s.id) WHERE c.parent_id IS NULL" 
 );
 
 query.on( 'row', function(row) {
@@ -21,9 +21,15 @@ query.on( 'row', function(row) {
 
     for( i=1; i<=name_length; i++ ){
         for( n=0; n<i; n++){
-            partials.push( row.name.substring( n, i ) );
+            var partial_string = row.name.substring( n, i );
+            if( partial_string.length > 2 ){
+                partials.push( partial_string );
+            }
         }
     }
+
+    console.log( partials )
+    die;
 
     var docrow = 
     [ { 
@@ -35,7 +41,8 @@ query.on( 'row', function(row) {
         'rarity': row.rarity,
         'set_shortname': row.shortname,
         'set_name': row.set_name,
-        'image_name': row.image_name
+        'image_name': row.image_name,
+        'rules_text': row.rules_text
     } ];
 
     solr_client.add(docrow, function(err, response) {
