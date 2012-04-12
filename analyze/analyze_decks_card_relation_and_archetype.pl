@@ -16,14 +16,19 @@ use Data::Dumper;
 
 my $dbh = DBI->connect( 'dbi:Pg:dbname=decklist', 'postgres', '', { AutoCommit => 1, RaiseError => 1 } );
 
-my $unanalyzed_deck_res = $dbh->selectall_arrayref( "SELECT d.id, e.event_type_id FROM decks d JOIN events_players ep ON( d.id = ep.deck_id ) JOIN events e ON( e.id = ep.event_id ) WHERE ( d.analyzed = 'f' OR d.analyzed IS NULL ) ORDER BY e.date DESC LIMIT 100", { Slice => {} } );
+my $batchsize = 3000;
+
+my $unanalyzed_deck_res = $dbh->selectall_arrayref( "SELECT d.id, e.event_type_id FROM decks d JOIN events_players ep ON( d.id = ep.deck_id ) JOIN events e ON( e.id = ep.event_id ) WHERE ( d.analyzed = 'f' OR d.analyzed IS NULL ) ORDER BY e.date ASC LIMIT ?", { Slice => {} }, $batchsize );
+
+my $i=0;
 
 foreach my $deck ( @{$unanalyzed_deck_res} ) {
+    $i++;
 
     my $deck_id = $deck->{'id'};
     my $event_type_id = $deck->{'event_type_id'};
 
-    print "Analyzing deck id $deck_id of event type id $event_type_id ..\n";
+    print "[ $i / $batchsize ] Analyzing deck id $deck_id of event type id $event_type_id ..\n";
     # for debugging in-work issues currently
     my $update_deck_state = $dbh->prepare( "UPDATE decks SET analyzed = null WHERE id = ?" );
     $update_deck_state->execute( $deck_id );
@@ -114,7 +119,7 @@ foreach my $deck ( @{$unanalyzed_deck_res} ) {
         "SELECT ac.* FROM archetypes_cards ac JOIN archetypes a ON( ac.archetype_id = a.id ) WHERE event_type_id = ?", { Slice => {} }, $event_type_id 
     ); 
 
-    # empty array for pushing archetype matches 
+    # a copy of archetypes_res for pushing archetype matches 
     my @matched_archetypes;
 
     for my $card ( @{$cards_res} ) {
@@ -127,7 +132,7 @@ foreach my $deck ( @{$unanalyzed_deck_res} ) {
             }
 
             if( $card->{'card_id'} == @{$archetypes_res}[ $archetype_card_index ]->{'card_id'} ){
-
+                print "\t\tfound a card match $card->{'card_id'}\n";
                 my $matched_card = splice( @{$archetypes_res}, $archetype_card_index, 1 );
                 push @matched_archetypes, $matched_card->{'archetype_id'};
 
@@ -142,6 +147,15 @@ foreach my $deck ( @{$unanalyzed_deck_res} ) {
     my %h;
     $h{$_}++ for @matched_archetypes; 
     my $archetype_id = (reverse sort keys %h)[0];
+
+    # did we get all of the cards for this archetype
+    for my $archetype_card ( @{$archetypes_res} ){
+        if( $archetype_card->{'archetype_id'} == $archetype_id ){
+            print "\t\tfound a missing archetype card - voiding archetype selection\n";
+            $archetype_id = undef;
+            last;
+        }
+    }
 
     if( defined $archetype_id ){
         print "\tdeck id '$deck_id' matches archetype id '$archetype_id'\n";
