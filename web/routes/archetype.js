@@ -119,7 +119,7 @@ exports.archetype_cards = function(req, res, next){
 
 exports.archetype_usage = function(req, res, next){
     
-    var query_string = "SELECT ddc.date, ddc.event_type_id, ddc.total_decks, COALESCE( aa.count, 0 ) AS number FROM decks_daily_counts ddc LEFT JOIN ( SELECT e.date, e.event_type_id, a.name, COUNT(*) FROM decks d JOIN archetypes a ON( a.id = d.archetype_id ) JOIN events_players ep ON( ep.deck_id = d.id ) JOIN events e ON( e.id = ep.event_id ) WHERE d.archetype_id = $1 AND e.date > NOW() - interval '14 days' AND e.date < NOW() - interval '1 day' GROUP BY e.date, e.event_type_id, a.name ) aa ON( aa.date = ddc.date AND aa.event_type_id = ddc.event_type_id ) WHERE ddc.date > NOW() - interval '14 days' AND ddc.date < NOW() - interval '1 day' AND ddc.event_type_id = ( SELECT event_type_id FROM archetypes WHERE id = $1 ) ORDER BY date ASC";
+    var query_string = "SELECT ddc.date, ddc.event_type_id, ddc.total_decks, COALESCE( aa.count, 0 ) AS number FROM decks_daily_counts ddc LEFT JOIN ( SELECT e.date, e.event_type_id, a.name, COUNT(*) FROM decks d JOIN archetypes a ON( a.id = d.archetype_id ) JOIN events_players ep ON( ep.deck_id = d.id ) JOIN events e ON( e.id = ep.event_id ) WHERE d.archetype_id = $1 AND e.date > NOW() - interval '30 days' AND e.date < NOW() - interval '1 day' GROUP BY e.date, e.event_type_id, a.name ) aa ON( aa.date = ddc.date AND aa.event_type_id = ddc.event_type_id ) WHERE ddc.date > NOW() - interval '30 days' AND ddc.date < NOW() - interval '1 day' AND ddc.event_type_id = ( SELECT event_type_id FROM archetypes WHERE id = $1 ) ORDER BY date ASC";
 
     var query_params = [ req.archetype_info.id ];
 
