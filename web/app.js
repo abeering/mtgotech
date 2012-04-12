@@ -27,11 +27,13 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    app.listen(3000);
 });
 
 app.configure('production', function(){
-  app.use(express.errorHandler());
+    app.use(express.errorHandler());
+    app.listen(80);
 });
 
 app.error(function(err, req, res, next){
@@ -83,5 +85,4 @@ function NotFound(msg){
 
 NotFound.prototype.__proto__ = Error.prototype;
 
-app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
