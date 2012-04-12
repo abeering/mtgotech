@@ -20,7 +20,7 @@ div#deck_info
         if( deck_info.archetype_id )
             br
             span This deck matches the 
-                a.link(href="/archetype/id/"+deck_info.archetype_id)= deck_info.archetype_name
+                a.link.novisit(href="/archetype/id/"+deck_info.archetype_id)= deck_info.archetype_name
                 |  archetype.
         hr
 
@@ -31,7 +31,7 @@ div#deck_info
             br
             each sideboard_card in deck_cards_info.sideboard
                 #{sideboard_card.count} - 
-                a.card_hover_link.link(href="/card/id/"+sideboard_card.card_id,image="/cards/"+sideboard_card.shortname+"/"+sideboard_card.image_name) #{sideboard_card.name}
+                a.card_hover_link.link.novisit(href="/card/id/"+sideboard_card.card_id,image="/cards/"+sideboard_card.shortname+"/"+sideboard_card.image_name) #{sideboard_card.name}
                 br
 
         each maindeck_type_cards, maindeck_card_basic_type in deck_cards_info.maindeck
@@ -42,9 +42,9 @@ div#deck_info
                     #{maindeck_type_card.count} - 
 
                     if maindeck_card_basic_type == 0
-                        a.card_hover_link.link.help(image="/cards/"+maindeck_type_card.shortname+"/"+maindeck_type_card.image_name) #{maindeck_type_card.name}
+                        a.card_hover_link.link.novisit.help(image="/cards/"+maindeck_type_card.shortname+"/"+maindeck_type_card.image_name) #{maindeck_type_card.name}
                     else 
-                        a.card_hover_link.link(href="/card/id/"+maindeck_type_card.card_id,image="/cards/"+maindeck_type_card.shortname+"/"+maindeck_type_card.image_name) #{maindeck_type_card.name}
+                        a.card_hover_link.link.novisit(href="/card/id/"+maindeck_type_card.card_id,image="/cards/"+maindeck_type_card.shortname+"/"+maindeck_type_card.image_name) #{maindeck_type_card.name}
 
                     br
 

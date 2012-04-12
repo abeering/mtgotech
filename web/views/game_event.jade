@@ -20,7 +20,7 @@
                         td Unknown
                     if( event_player.archetype_name )
                         td 
-                            a.link(href="/archetype/id/"+event_player.archetype_id,style="margin-left: 0px;")= event_player.archetype_name
+                            a.link.novisit(href="/archetype/id/"+event_player.archetype_id,style="margin-left: 0px;")= event_player.archetype_name
                     else 
                         td Unknown #{event_player.archetype_name}
                     td

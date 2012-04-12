@@ -16,7 +16,7 @@ center
             each standard_card in card_stats['overall'][1]
                 tr
                     td
-                        a.link(href="/card/id/"+standard_card.id,image="/cards/"+standard_card.shortname+"/"+standard_card.image_name) #{standard_card.name}
+                        a.link.novisit(href="/card/id/"+standard_card.id,image="/cards/"+standard_card.shortname+"/"+standard_card.image_name) #{standard_card.name}
                     td
                         span= standard_card.num
 
@@ -27,7 +27,7 @@ center
                 each legacy_card in card_stats['overall'][2]
                     tr
                         td
-                            a.link(href="/card/id/"+legacy_card.id,image="/cards/"+legacy_card.shortname+"/"+legacy_card.image_name) #{legacy_card.name}
+                            a.link.novisit(href="/card/id/"+legacy_card.id,image="/cards/"+legacy_card.shortname+"/"+legacy_card.image_name) #{legacy_card.name}
                         td
                             span= legacy_card.num 
 
@@ -38,7 +38,7 @@ center
             each modern_card in card_stats['overall'][3]
                 tr
                     td
-                        a.link(href="/card/id/"+modern_card.id,image="/cards/"+modern_card.shortname+"/"+modern_card.image_name) #{modern_card.name}
+                        a.link.novisit(href="/card/id/"+modern_card.id,image="/cards/"+modern_card.shortname+"/"+modern_card.image_name) #{modern_card.name}
                     td
                         span= modern_card.num
 
@@ -48,7 +48,7 @@ center
             each pauper_card in card_stats['overall'][4]
                 tr
                     td
-                        a.link(href="/card/id/"+pauper_card.id,image="/cards/"+pauper_card.shortname+"/"+pauper_card.image_name) #{pauper_card.name}
+                        a.link.novisit(href="/card/id/"+pauper_card.id,image="/cards/"+pauper_card.shortname+"/"+pauper_card.image_name) #{pauper_card.name}
                     td
                         span= pauper_card.num
 
@@ -62,7 +62,7 @@ center
             each standard_card in card_stats['weekly'][1]
                 tr
                     td
-                        a.link(href="/card/id/"+standard_card.id,image="/cards/"+standard_card.shortname+"/"+standard_card.image_name) #{standard_card.name}
+                        a.link.novisit(href="/card/id/"+standard_card.id,image="/cards/"+standard_card.shortname+"/"+standard_card.image_name) #{standard_card.name}
                     td
                         span= standard_card.num
 
@@ -73,7 +73,7 @@ center
                 each legacy_card in card_stats['weekly'][2]
                     tr
                         td
-                            a.link(href="/card/id/"+legacy_card.id,image="/cards/"+legacy_card.shortname+"/"+legacy_card.image_name) #{legacy_card.name}
+                            a.link.novisit(href="/card/id/"+legacy_card.id,image="/cards/"+legacy_card.shortname+"/"+legacy_card.image_name) #{legacy_card.name}
                         td
                             span= legacy_card.num
 
@@ -83,7 +83,7 @@ center
             each modern_card in card_stats['weekly'][3]
                 tr
                     td
-                        a.link(href="/card/id/"+modern_card.id,image="/cards/"+modern_card.shortname+"/"+modern_card.image_name) #{modern_card.name}
+                        a.link.novisit(href="/card/id/"+modern_card.id,image="/cards/"+modern_card.shortname+"/"+modern_card.image_name) #{modern_card.name}
                     td
                         span= modern_card.num
 
@@ -93,7 +93,7 @@ center
             each pauper_card in card_stats['weekly'][4]
                 tr
                     td
-                        a.link(href="/card/id/"+pauper_card.id,image="/cards/"+pauper_card.shortname+"/"+pauper_card.image_name) #{pauper_card.name}
+                        a.link.novisit(href="/card/id/"+pauper_card.id,image="/cards/"+pauper_card.shortname+"/"+pauper_card.image_name) #{pauper_card.name}
                     td
                         span= pauper_card.num
 

@@ -16,6 +16,10 @@ a.link:visited {
     color: purple;
 }
 
+a.novisit:visited {
+    color: blue;
+}
+
 /* 
  *
  *  navigation elements ( header )
