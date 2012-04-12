@@ -97,3 +97,13 @@ center
                     td
                         span= pauper_card.num
 
+br
+br
+
+script
+    $('#query').focus();
+    $('#search_form').submit(function(){
+        var query = '/search/card/' + encodeURIComponent( $('#query').val() );
+        window.location = query;
+        return false;
+    });

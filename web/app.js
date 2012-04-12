@@ -46,7 +46,7 @@ app.error(function(err, req, res, next){
 // Routes
 
 // homepage
-app.get('/', site.index);
+app.get('/', card.card_home ); 
 
 // card pages
 app.get('/card/id/:id', card.card_info, card.card_usage, card.card_relations, card.daily_usage_statistics, card.display );
