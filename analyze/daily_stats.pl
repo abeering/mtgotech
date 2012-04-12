@@ -97,7 +97,9 @@ SELECT e.date, e.event_type_id, dc.card_id, COUNT(distinct dc.deck_id)
 FROM decks_cards dc 
 JOIN events_players ep ON( ep.deck_id = dc.deck_id ) 
 JOIN events e ON( e.id = ep.event_id ) 
-WHERE e.date > ( SELECT max(date) FROM cards_daily_usage ) 
+WHERE
+e.date > ( SELECT max(date) FROM cards_daily_usage ) AND 
+e.date < NOW() - interval '1 day'
 GROUP BY e.date, e.event_type_id, dc.card_id
 /;
 
@@ -115,6 +117,8 @@ INSERT INTO decks_daily_counts ( date, event_type_id, total_decks )
 SELECT e.date, e.event_type_id, COUNT(distinct deck_id) 
 FROM events_players ep 
 JOIN events e ON ( e.id = ep.event_id ) 
+WHERE e.date > ( SELECT max(date) FROM decks_daily_counts ) AND
+e.date < NOW() - interval '1 day'
 GROUP BY e.date, e.event_type_id
 /;
 

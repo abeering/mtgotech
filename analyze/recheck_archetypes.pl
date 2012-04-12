@@ -16,9 +16,9 @@ use Data::Dumper;
 
 my $dbh = DBI->connect( 'dbi:Pg:dbname=decklist', 'postgres', '', { AutoCommit => 1, RaiseError => 1 } );
 
-my $batchsize = 3000;
+my $unanalyzed_deck_res = $dbh->selectall_arrayref( "SELECT d.id, e.event_type_id FROM decks d JOIN events_players ep ON( d.id = ep.deck_id ) JOIN events e ON( e.id = ep.event_id ) WHERE d.archetype_id IS NULL ORDER BY e.date ASC", { Slice => {} } );
 
-my $unanalyzed_deck_res = $dbh->selectall_arrayref( "SELECT d.id, e.event_type_id FROM decks d JOIN events_players ep ON( d.id = ep.deck_id ) JOIN events e ON( e.id = ep.event_id ) WHERE d.archetype_id IS ULL ORDER BY e.date ASC LIMIT ?", { Slice => {} }, $batchsize );
+my $batchsize = scalar @{$unanalyzed_deck_res};
 
 my $i=0;
 
@@ -83,7 +83,7 @@ foreach my $deck ( @{$unanalyzed_deck_res} ) {
     if( defined $archetype_id ){
         print "\tdeck id '$deck_id' matches archetype id '$archetype_id'\n";
         my $update_archetype = $dbh->prepare( "UPDATE decks SET archetype_id = ? WHERE id = ?" );
-        #$update_archetype->execute( $archetype_id, $deck_id );
+        $update_archetype->execute( $archetype_id, $deck_id );
     }
 
 }
