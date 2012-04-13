@@ -114,25 +114,29 @@ foreach my $deck ( @{$unanalyzed_deck_res} ) {
 
     # check for archetypes
 
-    # get archetypes 
-    my $archetypes_res = $dbh->selectall_arrayref( 
-        "SELECT ac.* FROM archetypes_cards ac JOIN archetypes a ON( ac.archetype_id = a.id ) WHERE event_type_id = ?", { Slice => {} }, $event_type_id 
-    ); 
+    # get archetypes
+    my $archetypes_res = $dbh->selectall_arrayref(
+        "SELECT ac.* FROM archetypes_cards ac JOIN archetypes a ON( ac.archetype_id = a.id ) WHERE event_type_id = ?",
+        { Slice => {} },
+        $event_type_id
+    );
 
-    # a copy of archetypes_res for pushing archetype matches 
+    # a copy of archetypes_res for pushing archetype matches
     my @matched_archetypes;
 
     for my $card ( @{$cards_res} ) {
-    
-        for my $archetype_card_index ( keys @{$archetypes_res} ){
 
-            if( !defined( @{$archetypes_res}[ $archetype_card_index ] ) ){
+        for my $archetype_card_index ( keys @{$archetypes_res} ) {
+
+            if ( !defined( @{$archetypes_res}[$archetype_card_index] ) ) {
+
                 # card already removed from array
-                next; 
+                next;
             }
 
-            if( $card->{'card_id'} == @{$archetypes_res}[ $archetype_card_index ]->{'card_id'} ){
-                print "\t\tfound a card match $card->{'card_id'}\n";
+            if ( $card->{'card_id'} == @{$archetypes_res}[$archetype_card_index]->{'card_id'} ) {
+                print
+                    "\t\tfound a card match $card->{'card_id'} in archetype  @{$archetypes_res}[ $archetype_card_index ]->{'archetype_id'}\n";
                 my $matched_card = splice( @{$archetypes_res}, $archetype_card_index, 1 );
                 push @matched_archetypes, $matched_card->{'archetype_id'};
 
@@ -142,28 +146,31 @@ foreach my $deck ( @{$unanalyzed_deck_res} ) {
 
     }
 
-    # count matched cards by archetype id 
+    # count matched cards by archetype id
     my %archetype_match_count;
-    my %h;
-    $h{$_}++ for @matched_archetypes; 
-    my $archetype_id = (reverse sort keys %h)[0];
+    my %counts;
+    $counts{$_}++ for @matched_archetypes;
 
-    # did we get all of the cards for this archetype
-    for my $archetype_card ( @{$archetypes_res} ){
-        if( $archetype_card->{'archetype_id'} == $archetype_id ){
-            print "\t\tfound a missing archetype card - voiding archetype selection\n";
-            $archetype_id = undef;
+    foreach my $archetype_id ( reverse sort keys %counts ) {
+
+        my $check = 1;
+
+        # did we get all of the cards for this archetype
+        for my $archetype_card ( @{$archetypes_res} ) {
+            if ( $archetype_card->{'archetype_id'} == $archetype_id ) {
+                print "\tfound a missing archetype card for $archetype_id - voiding archetype selection\n";
+                $check = undef;
+                last;
+            }
+        }
+
+        if ( $check ) {
+            print "\tdeck id '$deck_id' matches archetype id '$archetype_id' - saving\n";
+            my $update_archetype = $dbh->prepare("UPDATE decks SET archetype_id = ? WHERE id = ?");
+            $update_archetype->execute( $archetype_id, $deck_id );
             last;
         }
-    }
 
-    if( defined $archetype_id ){
-        print "\tdeck id '$deck_id' matches archetype id '$archetype_id'\n";
-        my $update_archetype = $dbh->prepare( "UPDATE decks SET archetype_id = ? WHERE id = ?" );
-        $update_archetype->execute( $archetype_id, $deck_id );
     }
-
-    $update_deck_state = $dbh->prepare( "UPDATE decks SET analyzed = 't' WHERE id = ?" );
-    $update_deck_state->execute( $deck_id );
 
 }
