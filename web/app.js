@@ -57,6 +57,8 @@ app.get('/cards', card.card_home );
 
 // deck pages
 app.get('/deck/id/:deck_id', deck.deck_info, deck.deck_cards_info, deck.display );
+app.get('/deck/id/:deck_id/bbcode_text', deck.deck_info, deck.deck_cards_info, deck.deck_bbcode_txt );
+app.get('/deck/id/:deck_id/mtgo_deckfile', deck.deck_info, deck.deck_cards_info, deck.deck_mtgo_deckfile_txt );
 // app.get('/deck/build', deck.build);
 
 // event pages

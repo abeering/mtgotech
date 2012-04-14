@@ -1,3 +1,4 @@
+doctype 5
 - title = deck_info.player_name + "'s Deck"
 
 img#card_image(src="/cards/blank.jpg")
@@ -22,6 +23,15 @@ div#deck_info
             span This deck matches the 
                 a.link.novisit(href="/archetype/id/"+deck_info.archetype_id)= deck_info.archetype_name
                 |  archetype.
+            br
+        - // shitty workaround for horrible jade classes can't have dots in them, or fancybox classes must have dots in them
+        - // i hate them both.
+        - var fancybox_classes = [ 'link', 'novisit', 'various', 'fancybox.iframe', 'smaller' ];   
+        ul
+            li.smaller 
+                a(class=fancybox_classes,href="/deck/id/"+deck_info.deck_id+"/bbcode_text") MTGS BBCode
+            li.smaller 
+                a.link.novisit.smaller(href="/deck/id/"+deck_info.deck_id+"/mtgo_deckfile") MTGO Deck File
         hr
 
     - var basic_types = { '0': 'Basic Land', '1': 'Land', '2': 'Creatures', '3': 'Sorceries', '4': 'Instants', 'null': 'Other Spells' }
@@ -48,4 +58,17 @@ div#deck_info
 
                     br
 
-
+script
+    $(function() {
+        $(".various").fancybox({
+            maxWidth    : 800,
+            maxHeight   : 600,
+            fitToView   : false,
+            width       : '70%',
+            height      : '70%',
+            autoSize    : false,
+            closeClick  : false,
+            openEffect  : 'none',
+            closeEffect : 'none'
+        });
+    });

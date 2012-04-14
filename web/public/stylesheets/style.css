@@ -373,6 +373,10 @@ a {
   color: #00B7FF;
 }
 
+.smaller {
+    font-size: 11px; 
+}
+
 .bolder {
     font-weight: bold;
 }
