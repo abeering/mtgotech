@@ -28,9 +28,6 @@ query.on( 'row', function(row) {
         }
     }
 
-    console.log( partials )
-    die;
-
     var docrow = 
     [ { 
         'id': row.id, 
