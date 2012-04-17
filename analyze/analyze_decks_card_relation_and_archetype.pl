@@ -126,7 +126,8 @@ foreach my $deck ( @{$unanalyzed_deck_res} ) {
 
     for my $card ( @{$cards_res} ) {
 
-        for my $archetype_card_index ( keys @{$archetypes_res} ) {
+        #for my $archetype_card_index ( keys @{$archetypes_res} ) {
+	for(my $archetype_card_index = 0; $archetype_card_index < scalar(@{$archetypes_res}); $archetype_card_index++){
 
             if ( !defined( @{$archetypes_res}[$archetype_card_index] ) ) {
 
