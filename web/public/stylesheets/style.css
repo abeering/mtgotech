@@ -1,5 +1,5 @@
 body {
-    font: 13px "Helvetica Neue", "Lucida Grande", "Arial";
+    font: 13px Arial, Helvetica, sans-serif;
     background-color: whitesmoke;
     padding: 0px;
     height: 2000px;
@@ -102,6 +102,16 @@ div#card_info {
 /* for the card usage graph */
 
 div#usage_placeholder {
+    width: 450px;
+    height: 200px;
+}
+
+div#maindeck_usage_placeholder {
+    width: 450px;
+    height: 200px;
+}
+
+div#sideboard_usage_placeholder {
     width: 450px;
     height: 200px;
 }

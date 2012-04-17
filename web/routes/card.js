@@ -52,7 +52,7 @@ exports.card_home = function( req, res ){
 
 exports.display = function( req, res ){
 
-    res.render( 'card', { 
+    res.render( 'card_test', { 
         "title": req.card_info.name, 
         "card_info": req.card_info, 
         "card_usage": req.card_usage, 
@@ -210,6 +210,7 @@ exports.daily_usage_statistics = function(req, res, next){
     var query = pg_client.query( query_string, query_params );
 
     var daily_usage_stats = {};
+    var sideboard_usage_stats = {};
     // used for graph
     var color_index = 0;
     // used for filling gaps

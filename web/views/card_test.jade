@@ -1,0 +1,125 @@
+img#card_image(src="/cards/"+card_info.shortname+"/"+card_info.image_name)
+
+div#card_info
+    p
+        b #{card_info.name} 
+        if card_info.mana 
+            -
+            #{card_info.mana} 
+        if card_info.cmc 
+            // not displaying until cmc is fixed in data
+            // i ( #{card_info.cmc} )
+        br
+        #{card_info.rarity} 
+        #{card_info.type} 
+        br
+        br
+        != card_info.rules_text
+    hr
+    if card_usage.total_seen > 0 
+        p 
+            if filter_format_name
+                - var formats = [ 'All Formats', 'Standard', 'Legacy', 'Modern', 'Pauper' ]
+                span You are currently viewing card relationships for the 
+                b #{filter_format_name} 
+                | format.  You can also select: 
+                br
+            else 
+                - var formats = [ 'Standard', 'Legacy', 'Modern', 'Pauper' ]
+                span Viewing usage statistics for 
+                b all formats 
+                | - Limit these results to a certain format: 
+                br
+            each format in formats
+                if format != filter_format_name
+                    if format == 'All' 
+                        a.link.novisit(href="/card/id/"+card_info.id)= format
+                    else
+                        a.link.novisit(href="/card/id/"+card_info.id+"/format/"+format)= format
+        hr
+        if filter_format_name != 'Legacy'
+            p
+                if filter_format_name
+                    span This card has been recorded in #{card_usage.total_seen}  
+                    b #{filter_format_name} 
+                    |  decks.
+                else
+                    span This card has been recorded in #{card_usage.total_seen} decks.
+            p
+                div#graphtabs 
+                    ul
+                        li
+                            a(href="#graphtabs-mainboard") Maindeck 
+                        li
+                            a(href="#graphtabs-sideboard") Sideboard
+                        li
+                            a(href="#graphtabs-other") Other 
+                    div#graphtabs-mainboard
+                        b Daily Usage ( Maindeck )
+                        br
+                        span(style='font-size:10px;font-style:italic') This graph represents the daily % of all decks which contained this card.
+                        div#maindeck_usage_placeholder
+                        br
+                        span Filter graph by format: 
+                        span 
+                            input.flot_option(type="checkbox",name="Standard",checked=( filter_format_name && filter_format_name != 'Standard' ? false : true  ) )
+                            label Standard
+                            //input.flot_option(type="checkbox",name="Legacy",checked=( filter_format_name && filter_format_name != 'Legacy' ? false : true  ) )
+                            //label Legacy
+                            input.flot_option(type="checkbox",name="Modern",checked=( filter_format_name && filter_format_name != 'Modern' ? false : true  ) )
+                            label Modern
+                            input.flot_option(type="checkbox",name="Pauper",checked=( filter_format_name && filter_format_name != 'Pauper' ? false : true  ) )
+                            label Pauper
+                    div#graphtabs-sideboard
+                        p
+                            span testststetset
+                    div#graphtabs-other
+                        p
+                            span asdfasdfsadfasdf
+            hr
+        p 
+            if filter_format_name
+                - var formats = [ 'All Formats', 'Standard', 'Legacy', 'Modern', 'Pauper' ]
+                span You are currently viewing card relationships for the 
+                b #{filter_format_name} 
+                | format.  
+                br
+            else 
+                - var formats = [ 'Standard', 'Legacy', 'Modern', 'Pauper' ]
+                span Viewing card relationships for 
+                b all formats 
+                br
+        p
+            span This card is most often played with these cards:
+            br
+            span(style='font-size:10px;font-style:italic') ( % represents the percentage of all decks which contain #{card_info.name} AND the listed card )
+            each relation in relation_info
+                div.relation_card 
+                    span #{relation.name}  
+                    br
+                    span 
+                        b #{relation.percentage}%
+                    a(href="/card/id/"+relation.second_card_id)
+                        img.relation_card_img(src="/cards/"+relation.shortname+"/"+relation.image_name)
+    else 
+        p
+            if filter_format_name
+                span This card has not been recorded in any 
+                    b= filter_format_name 
+                    |  decks.
+            else 
+                span This card has not been recorded in any decks.
+
+
+script
+    $(function() {
+        $( "#graphtabs" ).tabs();
+    });
+
+    var data = !{card_daily_usage_data};
+    var color_i = 0;
+           
+    init_graph_options();
+    render_daily_stats();
+
+

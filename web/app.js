@@ -9,7 +9,8 @@ var express = require('express')
   , search = require('./routes/search')
   , deck = require('./routes/deck')
   , game_event = require('./routes/game_event')
-  , archetype = require('./routes/archetype');
+  , archetype = require('./routes/archetype')
+  , image = require('./routes/image');
 
 var app = module.exports = express.createServer();
 
@@ -74,6 +75,8 @@ app.get('/archetype/id/:id', archetype.archetype_info, archetype.archetype_cards
 app.get('/search/card/:query', search.card_search_partial, search.results );
 app.get('/search/card/:query/page/:page_num', search.card_search_partial, search.results );
 app.post('/search/card', search.card_search_partial, search.results );
+
+app.get('/image_test', image.image_test );
 
 app.get('/404', function(req,res){
     throw new NotFound;
