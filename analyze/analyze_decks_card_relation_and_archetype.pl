@@ -173,5 +173,9 @@ foreach my $deck ( @{$unanalyzed_deck_res} ) {
         }
 
     }
+		
+	print "setting deck to analyzed.\n";
+	my $update_status = $dbh->prepare("UPDATE decks SET analyzed = 't' WHERE id = ?");
+    $update_status->execute( $deck_id );
 
 }
