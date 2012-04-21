@@ -1,3 +1,4 @@
+- var formats = [ 'All Formats', 'Standard', 'Legacy', 'Modern', 'Pauper' ]
 img#card_image(src="/cards/"+card_info.shortname+"/"+card_info.image_name)
 
 div#card_info
@@ -19,7 +20,6 @@ div#card_info
 	if card_usage.total_seen > 0 
 		p 
 			if filter_format_name
-				- var formats = [ 'All Formats', 'Standard', 'Legacy', 'Modern', 'Pauper' ]
 				span You are currently viewing card relationships for the 
 				b #{filter_format_name} 
 				| format.  You can also select: 
@@ -49,7 +49,11 @@ div#card_info
 						b Daily Usage ( Maindeck )
 						br
 						span(style='font-size:10px;font-style:italic') This graph represents the daily % of all decks which contained this card.
+						br
+						br
 						div#usage_placeholder
+						a.link.novisit.smaller(href="/card/id/"+card_info.id+"/usage.png",target="_blank") Permalink to graph image
+						br
 						br
 						span Filter graph by format: 
 						span 
@@ -95,6 +99,15 @@ div#card_info
 					|  decks.
 			else 
 				span This card has not been recorded in any decks.
+			br
+			br
+			span Try another format: 
+				each format in formats
+					if format != filter_format_name
+						if format == 'All' 
+							a.link.novisit(href="/card/id/"+card_info.id)= format
+						else
+							a.link.novisit(href="/card/id/"+card_info.id+"/format/"+format)= format
 
 
 script
