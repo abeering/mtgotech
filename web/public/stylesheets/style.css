@@ -261,6 +261,35 @@ div.single {
  *
  */
 
+div.plot_info {
+	position: absolute;
+	top: 5px; 
+	left: 5px; 
+	padding: 5px;
+	background-color: gray;
+	opacity: .75;
+	filter:alpha(opacity=75);
+	display: none;
+}
+
+div#Standard_usage_placeholder {
+    width: 600px;
+    height: 300px;
+	cursor: pointer;
+}
+
+div#Modern_usage_placeholder {
+    width: 600px;
+    height: 300px;
+	cursor: pointer;
+}
+
+div#Pauper_usage_placeholder {
+    width: 600px;
+    height: 300px;
+	cursor: pointer;
+}
+
 div#archetype_info {
     padding: 10px;
     text-align: left;

@@ -1,29 +1,94 @@
 center
-    h3 Tracked Archetypes
+	h3 Tracked Archetypes
 
-    if archetypes['Standard']
-        div.daily_list
-            h4 Standard
-            table
-                each standard_archetype in archetypes['Standard']
-                    tr
-                        td
-                            a.link.novisit(href="/archetype/id/"+standard_archetype.id) #{standard_archetype.name}
+	if archetypes['Standard']
+		h4 Standard
+		div
+			div#Standard_usage_placeholder
 
-    if archetypes['Modern']
-        div.daily_list
-            h4 Modern
-            table
-                each modern_archetype in archetypes['Modern']
-                    tr
-                        td
-                            a.link.novisit(href="/archetype/id/"+modern_archetype.id) #{modern_archetype.name}
+	if archetypes['Modern']
+		h4 Modern
+		div
+			div#Modern_usage_placeholder
 
-    if archetypes['Pauper']
-        div.daily_list
-            h4 Pauper
-            table
-                each pauper_archetype in archetypes['Pauper']
-                    tr
-                        td
-                            a.link.novisit(href="/archetype/id/"+pauper_archetype.id) #{pauper_archetype.name}
+	if archetypes['Pauper']
+		h4 Pauper
+		div
+			div#Pauper_usage_placeholder
+
+script
+	var data = !{format_archetype_usage};
+	var color_i = 0;
+
+	function pieHover(event, pos, obj) {
+		if (!obj)
+			return;
+
+		percent = parseFloat(obj.series.percent).toFixed(2);
+		var label_parts = obj.series.label.split(',');
+		var plot_id_parts = this.id.split("_");
+		var plot_info_id = "#" + plot_id_parts[0] + "_plot_info";
+		$(plot_info_id).css('display','block');
+		$(plot_info_id).text( label_parts[1] + " - " + percent + "%" );
+	}
+
+	function pieClick(event, pos, obj){
+		if (!obj)
+			return;
+		var label_parts = obj.series.label.split(',');
+		if( label_parts[0] > 0 ){
+			var url = "/archetype/id/" + label_parts[0];
+			window.location =url;
+		}
+
+	}
+
+
+	for( key in data ){
+
+		var placeholder_id = '#' + key + '_usage_placeholder';
+
+		var plot = $.plot( 
+			$(placeholder_id), 
+			data[key]['data'],  
+			{ 
+				series: { 
+					pie: { 
+						show: true,
+						radius: 400,
+						label: { 
+							show: true,
+							radius: 15/16,
+							threshold: 0.05,
+							formatter: function(label,series){
+								var label_parts = label.split(',');
+								if( label_parts[0] > 0 ){
+									return '<div id="label-' + label_parts[0] + '" style="text-align:center;font-size:10px;padding:2px;"><a class="link novisit" href="/archetype/id/' + label_parts[0] + '">' + label_parts[1] + '</a><br/>' + Math.round(series.percent) + '%</div>';
+								} else {
+									return '<div id="label-' + label_parts[0] + '" style="text-align:center;font-size:10px;">' + label_parts[1] + '<br/>' + Math.round(series.percent) + '%</div>';
+								}
+							},
+							background: { opacity: 0.25, color:'#000' },
+						},
+					}
+				}, 
+				grid: {
+					hoverable: true,
+					clickable: true
+				},
+				legend: {
+					show: false,
+				}
+			}
+		); 
+
+		// place info box
+		$(placeholder_id).append('<div id="' + key + '_plot_info" class="plot_info"></div>');
+		
+		// bind pie events
+		$(placeholder_id).bind("plothover", pieHover );
+		$(placeholder_id).bind("plotclick", pieClick );
+
+
+	}
+

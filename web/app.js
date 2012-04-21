@@ -68,7 +68,7 @@ app.get('/event/mtgoid/:event_id', game_event.event_info_by_mtgoid, game_event.e
 app.get('/events', game_event.recent_events_info, game_event.display_recent_events );
 
 // archetype pages
-app.get('/archetypes', archetype.archetype_home );
+app.get('/archetypes', archetype.archetype_list, archetype.format_archetype_usage, archetype.archetype_home );
 app.get('/archetype/id/:id', archetype.archetype_info, archetype.archetype_cards, archetype.archetype_usage, archetype.archetype_recent_decks, archetype.display_archetype );
 
 // search pages
@@ -76,7 +76,7 @@ app.get('/search/card/:query', search.card_search_partial, search.results );
 app.get('/search/card/:query/page/:page_num', search.card_search_partial, search.results );
 app.post('/search/card', search.card_search_partial, search.results );
 
-app.get('/image_test', image.image_test );
+app.get('/archetype_image/:id', archetype.archetype_info, archetype.archetype_usage, image.image_test );
 
 app.get('/404', function(req,res){
     throw new NotFound;
