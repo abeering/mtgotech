@@ -1,109 +1,64 @@
 
 div(style="margin: 10px; border: 0px; width:600px")
-    h3 Search Cards
-    form#search_form
-        input#query(type="text")
-        input#search_submit(type="submit",value="Search");
+	h3 Search Cards
+	form#search_form
+		input#query(type="text")
+		input#search_submit(type="submit",value="Search");
+	span.smaller Search for cards by name. Advanced search is on it's way.
 
 hr
 br
 
 center
-    h3 Most Used Cards ( Overall )
-    div.daily_list
-        h4 Standard
-        table
-            each standard_card in card_stats['overall'][1]
-                tr
-                    td
-                        a.link.novisit(href="/card/id/"+standard_card.id,image="/cards/"+standard_card.shortname+"/"+standard_card.image_name) #{standard_card.name}
-                    td
-                        span= standard_card.num
+	h3 Most Used Cards ( Last 7 Days )
+	div.daily_list
+		h4 Standard
+		table
+			each standard_card in card_stats['weekly'][1]
+				tr
+					td
+						a.link.novisit(href="/card/id/"+standard_card.id,image="/cards/"+standard_card.shortname+"/"+standard_card.image_name) #{standard_card.name}
+					td
+						span= standard_card.num
 
-    //
-        div.daily_list
-            h4 Legacy
-            table
-                each legacy_card in card_stats['overall'][2]
-                    tr
-                        td
-                            a.link.novisit(href="/card/id/"+legacy_card.id,image="/cards/"+legacy_card.shortname+"/"+legacy_card.image_name) #{legacy_card.name}
-                        td
-                            span= legacy_card.num 
+	//
+		div.daily_list
+			h4 Legacy
+			table
+				each legacy_card in card_stats['weekly'][2]
+					tr
+						td
+							a.link.novisit(href="/card/id/"+legacy_card.id,image="/cards/"+legacy_card.shortname+"/"+legacy_card.image_name) #{legacy_card.name}
+						td
+							span= legacy_card.num
 
+	div.daily_list
+		h4 Modern
+		table
+			each modern_card in card_stats['weekly'][3]
+				tr
+					td
+						a.link.novisit(href="/card/id/"+modern_card.id,image="/cards/"+modern_card.shortname+"/"+modern_card.image_name) #{modern_card.name}
+					td
+						span= modern_card.num
 
-    div.daily_list
-        h4 Modern
-        table
-            each modern_card in card_stats['overall'][3]
-                tr
-                    td
-                        a.link.novisit(href="/card/id/"+modern_card.id,image="/cards/"+modern_card.shortname+"/"+modern_card.image_name) #{modern_card.name}
-                    td
-                        span= modern_card.num
-
-    div.daily_list
-        h4 Pauper
-        table
-            each pauper_card in card_stats['overall'][4]
-                tr
-                    td
-                        a.link.novisit(href="/card/id/"+pauper_card.id,image="/cards/"+pauper_card.shortname+"/"+pauper_card.image_name) #{pauper_card.name}
-                    td
-                        span= pauper_card.num
-
-    br
-    br
-
-    h3 Most Used Cards ( Last 7 Days )
-    div.daily_list
-        h4 Standard
-        table
-            each standard_card in card_stats['weekly'][1]
-                tr
-                    td
-                        a.link.novisit(href="/card/id/"+standard_card.id,image="/cards/"+standard_card.shortname+"/"+standard_card.image_name) #{standard_card.name}
-                    td
-                        span= standard_card.num
-
-    //
-        div.daily_list
-            h4 Legacy
-            table
-                each legacy_card in card_stats['weekly'][2]
-                    tr
-                        td
-                            a.link.novisit(href="/card/id/"+legacy_card.id,image="/cards/"+legacy_card.shortname+"/"+legacy_card.image_name) #{legacy_card.name}
-                        td
-                            span= legacy_card.num
-
-    div.daily_list
-        h4 Modern
-        table
-            each modern_card in card_stats['weekly'][3]
-                tr
-                    td
-                        a.link.novisit(href="/card/id/"+modern_card.id,image="/cards/"+modern_card.shortname+"/"+modern_card.image_name) #{modern_card.name}
-                    td
-                        span= modern_card.num
-
-    div.daily_list
-        h4 Pauper
-        table
-            each pauper_card in card_stats['weekly'][4]
-                tr
-                    td
-                        a.link.novisit(href="/card/id/"+pauper_card.id,image="/cards/"+pauper_card.shortname+"/"+pauper_card.image_name) #{pauper_card.name}
-                    td
-                        span= pauper_card.num
+	div.daily_list
+		h4 Pauper
+		table
+			each pauper_card in card_stats['weekly'][4]
+				tr
+					td
+						a.link.novisit(href="/card/id/"+pauper_card.id,image="/cards/"+pauper_card.shortname+"/"+pauper_card.image_name) #{pauper_card.name}
+					td
+						span= pauper_card.num
 
 br
 br
 
 script
-    $('#query').focus();
-    $('#search_form').submit(function(){
-        var query = '/search/card/' + encodeURIComponent( $('#query').val() );
-        window.location = query;
-        return false;
-    });
+	$('#query').focus();
+	$('#search_form').submit(function(){
+		var query = '/search/card/' + encodeURIComponent( $('#query').val() );
+		window.location = query;
+		return false;
+	});
