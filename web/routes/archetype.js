@@ -23,7 +23,6 @@ exports.archetype_home = function( req, res ){
 exports.format_archetype_usage = function( req, res, next ){
 
 	var query_string = "select et.name as event_type_name, COALESCE( a.name, 'Unknown' ) as archetype_name, d.archetype_id, dc.total, count(*) as count from decks d left join archetypes a ON( a.id = d.archetype_id ) join events_players ep ON( ep.deck_id = d.id ) join events e ON( e.id = ep.event_id ) join event_types et ON( et.id = e.event_type_id ) join ( SELECT e.event_type_id, count(*) as total from decks d join events_players ep ON( ep.deck_id = d.id ) join events e ON( e.id = ep.event_id ) group by e.event_type_id ) dc ON( dc.event_type_id = e.event_type_id ) WHERE e.event_type_id IN( 1, 4 ) and E.DATe > NOW() - interval '30 days' AND e.date < NOW() - interval '1 day' group by et.name, a.name, d.archetype_id, dc.total order by et.name, count";
-	console.log( query_string );
 
 	var query = pg_client.query( query_string );
 
@@ -201,7 +200,7 @@ exports.archetype_usage = function(req, res, next){
 
 exports.archetype_recent_decks = function( req, res, next ){
 
-    var query_string = "SELECT d.id, ep.event_id, ep.wins, ep.losses, ep.rank, p.name as player_name, e.name as event_name, e.date as event_date FROM decks d JOIN events_players ep ON( ep.deck_id = d.id ) JOIN events e ON( e.id = ep.event_id ) JOIN players p ON( p.id = ep.player_id ) WHERE d.archetype_id = $1 ORDER BY e.date DESC LIMIT 20";
+    var query_string = "SELECT d.id, ep.event_id, ep.wins, ep.losses, ep.rank, p.name as player_name, e.name as event_name, e.date as event_date FROM decks d JOIN events_players ep ON( ep.deck_id = d.id ) JOIN events e ON( e.id = ep.event_id ) JOIN players p ON( p.id = ep.player_id ) WHERE d.archetype_id = $1 ORDER BY e.date DESC LIMIT 30";
 
     var query = pg_client.query( query_string, [ req.archetype_info.id ] );
 

@@ -15,7 +15,7 @@ exports.transform_archetype = function(req, res, next){
 			legend: { position: 'ne', backgroundColor: 'white', backgroundOpacity: 0.50 },
 		},
 	};
-
+	req.plot_note = 'Recent ' + req.archetype_info['name'] + ' usage @ mtgotech.com';
 	next();
 }
 
@@ -36,6 +36,7 @@ exports.transform_card = function(req, res, next){
 			legend: { position: 'ne', backgroundColor: 'white', backgroundOpacity: 0.50 },
 		},
 	};
+	req.plot_note = 'Recent ' + req.card_info['name'] + ' usage @ mtgotech.com';
 	next();
 }
 exports.image = function(req, res){
@@ -76,9 +77,9 @@ exports.image = function(req, res){
 
 			var ctx = $plot.getCanvas().getContext("2d");
 			ctx.fillStyle = '#000';
-			ctx.font = 'bold 10px sans-serif';
+			ctx.font = 'bold 8px sans-serif';
 			//ctx.textBaseline( 'bottom' );
-			ctx.fillText( 'Generated @ mtgotech.com', 35, 25 );
+			ctx.fillText( req.plot_note, 30, 25 );
 
             // get the node-canvas instance
             var nodeCanvas = $plot.getCanvas();
