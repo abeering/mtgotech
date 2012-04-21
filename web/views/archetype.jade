@@ -1,47 +1,64 @@
-div#archetype_info
-    h2 #{archetype_info.name} ( 
-        i= archetype_info.event_type_name 
-        | )
+DIv#archetype_info
+	h2 #{archetype_info.name} ( 
+		i= archetype_info.event_type_name 
+		|  )
 
-    hr
-    p
-        b Archetype Usage
-        br
-        span(style='font-size:10px;font-style:italic') This graph represents the daily % of decks which matched this archetype in it's format.
-        div#usage_placeholder
-        br
-    p
-        h4 Core Cards
-        each archetype_card in archetype_cards
-            a(href="/card/id/"+archetype_card.id)
-                img.archetype_card_img(src="/cards/"+archetype_card.shortname+"/"+archetype_card.image_name)
-
-    if archetype_recent_decks.length > 0
-        p
-            b Recent Decks
-            table.event_table 
-                tr
-                    th(style="width:150px") Player Name
-                    th(style="width:125px") Rank/Record
-                each deck in archetype_recent_decks
-                    tr
-                        td= deck.player_name
-                        if( deck.rank )
-                            td= deck.rank
-                        else if( deck.wins >= 0 && deck.losses >= 0 )
-                            td #{deck.wins} - #{deck.losses}
-                        else 
-                            td Unknown
-                        td
-                            a.link(href="/deck/id/"+deck.id) View Deck
+	hr
+	p
+		div#archetypetabs 
+			ul
+				li
+					a(href="#archetypetabs-usage") Recent Usage
+				li
+					a(href="#archetypetabs-cards") Core Cards
+				li
+					a(href="#archetypetabs-decks") Recent Decks
+			div#archetypetabs-usage.tab_container
+				b Archetype Usage
+				br
+				span(style='font-size:10px;font-style:italic') This graph represents the daily % of decks which matched this archetype in it's format.
+				div#usage_placeholder
+				a.link.novisit.smaller(href="/archetype/id/"+archetype_info.id+"/usage.png",target="_blank") Permalink to graph image
+				br
+			div#archetypetabs-cards.tab_container
+				p
+					h4 Core Cards
+					each archetype_card in archetype_cards
+						a(href="/card/id/"+archetype_card.id)
+							img.archetype_card_img(src="/cards/"+archetype_card.shortname+"/"+archetype_card.image_name)
+			if archetype_recent_decks.length > 0
+				div#archetypetabs-decks.tab_container
+					p
+						b Recent Decks
+						table.event_table 
+							tr
+								th(style="width:150px") Player Name
+								th(style="width:150px") Date
+								th(style="width:125px") Rank/Record
+							each deck in archetype_recent_decks
+								tr
+									td= deck.player_name
+									td= deck.event_date
+									if( deck.rank )
+										td= deck.rank
+									else if( deck.wins >= 0 && deck.losses >= 0 )
+										td #{deck.wins} - #{deck.losses}
+									else 
+										td Unknown
+									td
+										a.link(href="/deck/id/"+deck.id) View Deck
 
 script
-    var data = !{archetype_usage_plot_data};
-    $.plot( $('#usage_placeholder'), 
-        [ data ],  
-        { 
-            legend: { backgroundOpacity: .5, position: 'nw' },
-            xaxis: { mode: 'time', minTickSize: [ 1, "day"], },
-            yaxis: { min: 0, max: 100 },
-        }
-    ); 
+	$(function() {
+		$( "#archetypetabs" ).tabs();
+	});
+
+	var data = !{archetype_usage_plot_data};
+	$.plot( $('#usage_placeholder'), 
+		[ data ],  
+		{ 
+			legend: { backgroundOpacity: .5, position: 'nw' },
+			xaxis: { mode: 'time', minTickSize: [ 1, "day"], },
+			yaxis: { min: 0, max: 100 },
+		}
+	); 

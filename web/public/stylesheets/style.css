@@ -1,5 +1,5 @@
 body {
-    font: 13px "Helvetica Neue", "Lucida Grande", "Arial";
+    font: 13px Arial, Helvetica, sans-serif;
     background-color: whitesmoke;
     padding: 0px;
     height: 2000px;
@@ -101,7 +101,22 @@ div#card_info {
 
 /* for the card usage graph */
 
+div.tab_container { 
+	max-height: 350px;
+	overflow: auto;
+}
+
 div#usage_placeholder {
+    width: 450px;
+    height: 200px;
+}
+
+div#maindeck_usage_placeholder {
+    width: 450px;
+    height: 200px;
+}
+
+div#sideboard_usage_placeholder {
     width: 450px;
     height: 200px;
 }
@@ -117,17 +132,18 @@ div#usage_graph {
 /* for card relation boxes */
 div.relation_card {
     text-align: center;
-    font-size: 12px;
+    font-size: 10px;
     border: 1px solid;
-    padding: 5px; 
-    width: 140px; 
-    margin-right: 10px;
+    padding: 2px; 
+    width: 135px; 
+    margin-right: 2px;
     margin-bottom: 10px;
     float: left;
+	overflow: auto;
 }
 
 img.relation_card_img {
-    width: 140px;
+    width: 125px;
 
 }
 /*
@@ -250,6 +266,35 @@ div.single {
  * archetype pages
  *
  */
+
+div.plot_info {
+	position: absolute;
+	top: 5px; 
+	left: 5px; 
+	padding: 5px;
+	background-color: gray;
+	opacity: .75;
+	filter:alpha(opacity=75);
+	display: none;
+}
+
+div#Standard_usage_placeholder {
+    width: 600px;
+    height: 300px;
+	cursor: pointer;
+}
+
+div#Modern_usage_placeholder {
+    width: 600px;
+    height: 300px;
+	cursor: pointer;
+}
+
+div#Pauper_usage_placeholder {
+    width: 600px;
+    height: 300px;
+	cursor: pointer;
+}
 
 div#archetype_info {
     padding: 10px;

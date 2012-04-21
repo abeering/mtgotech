@@ -210,6 +210,7 @@ exports.daily_usage_statistics = function(req, res, next){
     var query = pg_client.query( query_string, query_params );
 
     var daily_usage_stats = {};
+    var sideboard_usage_stats = {};
     // used for graph
     var color_index = 0;
     // used for filling gaps

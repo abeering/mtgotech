@@ -9,7 +9,8 @@ var express = require('express')
   , search = require('./routes/search')
   , deck = require('./routes/deck')
   , game_event = require('./routes/game_event')
-  , archetype = require('./routes/archetype');
+  , archetype = require('./routes/archetype')
+  , image = require('./routes/image');
 
 var app = module.exports = express.createServer();
 
@@ -52,6 +53,7 @@ app.get('/', card.card_home );
 
 // card pages
 app.get('/card/id/:id', card.card_info, card.card_usage, card.card_relations, card.daily_usage_statistics, card.display );
+app.get('/card/id/:id/usage.png', card.card_info, card.daily_usage_statistics, image.transform_card, image.image );
 app.get('/card/id/:id/format/:format', card.filter_format, card.card_info, card.card_usage, card.card_relations, card.daily_usage_statistics, card.display );
 app.get('/cards', card.card_home ); 
 
@@ -67,13 +69,16 @@ app.get('/event/mtgoid/:event_id', game_event.event_info_by_mtgoid, game_event.e
 app.get('/events', game_event.recent_events_info, game_event.display_recent_events );
 
 // archetype pages
-app.get('/archetypes', archetype.archetype_home );
+app.get('/archetypes', archetype.archetype_list, archetype.format_archetype_usage, archetype.archetype_home );
 app.get('/archetype/id/:id', archetype.archetype_info, archetype.archetype_cards, archetype.archetype_usage, archetype.archetype_recent_decks, archetype.display_archetype );
+app.get('/archetype/id/:id/usage.png', archetype.archetype_info, archetype.archetype_usage, image.transform_archetype, image.image );
 
 // search pages
 app.get('/search/card/:query', search.card_search_partial, search.results );
 app.get('/search/card/:query/page/:page_num', search.card_search_partial, search.results );
 app.post('/search/card', search.card_search_partial, search.results );
+
+//app.get('/image_test', image.image_test );
 
 app.get('/404', function(req,res){
     throw new NotFound;
