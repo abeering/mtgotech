@@ -52,7 +52,7 @@ exports.card_home = function( req, res ){
 
 exports.display = function( req, res ){
 
-    res.render( 'card_test', { 
+    res.render( 'card', { 
         "title": req.card_info.name, 
         "card_info": req.card_info, 
         "card_usage": req.card_usage, 
