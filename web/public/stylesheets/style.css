@@ -278,9 +278,15 @@ div.plot_info {
 	display: none;
 }
 
+div.archetype_graph_container { 
+	float: left;
+	margin: 10px;
+	text-align: center;
+}
+
 div#Standard_usage_placeholder {
-    width: 600px;
-    height: 300px;
+    width: 350px;
+    height: 350px;
 	cursor: pointer;
 }
 
@@ -291,8 +297,8 @@ div#Modern_usage_placeholder {
 }
 
 div#Pauper_usage_placeholder {
-    width: 600px;
-    height: 300px;
+    width: 350px;
+    height: 350px;
 	cursor: pointer;
 }
 

@@ -1,19 +1,19 @@
-center
+p
 	h3 Tracked Archetypes
 
 	if archetypes['Standard']
-		h4 Standard
-		div
+		div.archetype_graph_container
+			h4 Standard
 			div#Standard_usage_placeholder
 
 	if archetypes['Modern']
-		h4 Modern
-		div
+		div.archetype_graph_container
+			h4 Modern
 			div#Modern_usage_placeholder
 
 	if archetypes['Pauper']
-		h4 Pauper
-		div
+		div.archetype_graph_container
+			h4 Pauper
 			div#Pauper_usage_placeholder
 
 script
@@ -55,15 +55,15 @@ script
 				series: { 
 					pie: { 
 						show: true,
-						radius: 400,
+						radius: 1,
 						label: { 
 							show: true,
-							radius: 15/16,
+							radius: 3/4,
 							threshold: 0.05,
 							formatter: function(label,series){
 								var label_parts = label.split(',');
 								if( label_parts[0] > 0 ){
-									return '<div id="label-' + label_parts[0] + '" style="text-align:center;font-size:10px;padding:2px;"><a class="link novisit" href="/archetype/id/' + label_parts[0] + '">' + label_parts[1] + '</a><br/>' + Math.round(series.percent) + '%</div>';
+									return '<div id="label-' + label_parts[0] + '" style="text-align:center;font-size:10px;padding:1px;"><a class="link novisit" href="/archetype/id/' + label_parts[0] + '">' + label_parts[1] + '</a><br/>' + Math.round(series.percent) + '%</div>';
 								} else {
 									return '<div id="label-' + label_parts[0] + '" style="text-align:center;font-size:10px;">' + label_parts[1] + '<br/>' + Math.round(series.percent) + '%</div>';
 								}
