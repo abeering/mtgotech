@@ -1,37 +1,39 @@
+div(style="border:1px dashed;padding:15px;background-color:lightgray;")
+	|  Events are automatically analyzed and reported here as they are published.  Click through to individual decks to save decklist files or export decklist BBCode. 
 
 br
 
 center
-    h3 Recent Events
-    div.daily_list
-        h4 Standard
-        table
-            each standard_event in events['Standard']
-                tr
-                    td
-                        a.link(href="/event/id/"+standard_event.id) #{standard_event.name}
-                    td
-                        span= standard_event.date
+	h3 Recent Events
+	div.daily_list
+		h4 Standard
+		table
+			each standard_event in events['Standard']
+				tr
+					td
+						a.link(href="/event/id/"+standard_event.id) #{standard_event.name} ##{standard_event.mtgo_id}
+					td
+						span= standard_event.date
 
-    div.daily_list
-        h4 Modern
-        table
-            each modern_event in events['Modern']
-                tr
-                    td
-                        a.link(href="/event/id/"+modern_event.id) #{modern_event.name} 
-                    td
-                        span= modern_event.date
+	div.daily_list
+		h4 Modern
+		table
+			each modern_event in events['Modern']
+				tr
+					td
+						a.link(href="/event/id/"+modern_event.id) #{modern_event.name} ##{modern_event.mtgo_id}
+					td
+						span= modern_event.date
 
-    div.daily_list
-        h4 Pauper
-        table
-            each pauper_event in events['Pauper']
-                tr
-                    td
-                        a.link(href="/event/id/"+pauper_event.id) #{pauper_event.name} 
-                    td
-                        span= pauper_event.date
+	div.daily_list
+		h4 Pauper
+		table
+			each pauper_event in events['Pauper']
+				tr
+					td
+						a.link(href="/event/id/"+pauper_event.id) #{pauper_event.name} ##{pauper_event.mtgo_id}
+					td
+						span= pauper_event.date
 
 br
 br
